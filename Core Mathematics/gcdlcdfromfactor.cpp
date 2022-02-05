@@ -46,8 +46,6 @@ int lcdfromfactor(int a, int b){return (a*b)/gcdfromfactor(a,b);}
 
 int main()
 {
-    // vector<int> ans = factors(34);
-    // for(int i=0; i<ans.size(); i++) cout<<ans[i]<<endl;
-    cout<<gcdfromfactor(8,12)<<endl; 
-    cout<<lcdfromfactor(8,12)<<endl;
+    cout<<gcdfromfactor(12,8)<<endl; 
+    cout<<lcdfromfactor(12,8)<<endl;
 }
