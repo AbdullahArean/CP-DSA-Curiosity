@@ -52,9 +52,9 @@ int f1(int A[], int B[], int C[], int l1, int l2, int l3)
 }
 int main()
 {
-    int A[] = {1, 4, 5,8,10};
-    int B[] = {6, 9,15};
-    int C[] = {2, 3,6,6};
+    int A[] = {10,12,45,65,76};
+    int B[] = { 28, 29, 90};
+    int C[] = { 78,89};
     cout<<f1(A,B,C,5,3,4)<<endl;
     return 0;
 }
