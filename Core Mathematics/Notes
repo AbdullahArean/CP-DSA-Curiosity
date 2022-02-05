@@ -1,4 +1,4 @@
-Fundamentals:
+8Fundamentals:
     1. Binary Exponentiation
     2. Euclidean Algorithm
     3. Fibonacci Numbers and Recurrences
@@ -6,7 +6,7 @@ Fundamentals:
 ********It is very important not to give up
 
 Note*****what is (b&1)? https://stackoverflow.com/questions/50517336/cannot-understand-what-is-meant-by-b1-in-this-code-snippet-of-c
-
+#termux tested
 Note*****Left Shift : (https://www.geeksforgeeks.org/left-shift-right-shift-operators-c-cpp/)
 Denoted as : << 
 Eg: N<<i (N: first operand, i: second operand)
