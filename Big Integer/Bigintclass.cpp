@@ -78,7 +78,7 @@ struct bigint {
         return *this + (-v);
     }
  
-    void operator*=(int v)                      //Multiplication Function
+    void operator *=(int v)                      //Multiplication Function
     {
         if (v < 0)
             sign = -sign, v = -v;
