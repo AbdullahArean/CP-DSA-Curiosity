@@ -47,8 +47,8 @@ int lcdfromfactor(int a, int b)
 
 int main()
 {
-    // vector<int> ans = factors(34);
-    // for(int i=0; i<ans.size(); i++) cout<<ans[i]<<endl;
-    cout<<gcdfromfactor(8,12)<<endl; 
-    cout<<lcdfromfactor(8,12)<<endl;
+    vector<int> ans = factors(999983);
+    for(int i=0; i<ans.size(); i++) cout<<ans[i]<<endl;
+    // cout<<gcdfromfactor(8,12)<<endl; 
+    // cout<<lcdfromfactor(8,12)<<endl;
 }

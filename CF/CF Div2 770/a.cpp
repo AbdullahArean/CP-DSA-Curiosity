@@ -11,9 +11,9 @@ bool check(string s){
 	int len = s.size();
 	for(int i=0; i<len/2; i++)
 	{
-		if(s[i]!=s[len-i-1]) return 1;
+		if(s[i]!=s[len-i-1]) return 0;
 	}
-	return 0;
+	return 1;
 }
 void Solution(){
 	int n;
@@ -23,11 +23,11 @@ void Solution(){
 		cin>>a>>b;
 		string s;
 		cin>>s;
-		
-		if(b<2) cout<<"1\n";
-		else if(!check(s)) cout<<"1\n";
-		else cout<<"2\n";
-
+		if(b==0) printf("1\n");
+		else{
+			if(check(s)) printf("1\n");
+			else printf("2\n");
+		}
 
 	}
 	
