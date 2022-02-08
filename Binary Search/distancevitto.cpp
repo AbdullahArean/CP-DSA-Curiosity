@@ -1,14 +1,8 @@
 /*
-Problem Link  : Binary Search, Lower Bound and Upper Bound Implemented and matched with STL
-About Problem : Binary Search Implementation
-Tags          : 
+Problem Link  : https://onlinejudge.org/external/100/10041.pdf
+Tags          : Median is the saviour
 Notes         :
-        lower_bound returns an iterator pointing to the first element 
-        in the range [first,last) which has a value not less than ‘val’. 
-        upper_bound returns an iterator pointing to the first element in the 
-        range [first,last) which has a value greater than ‘val’. 
- */
-
+*/
 #include<bits/stdc++.h>
 using namespace std;
 const int MAXN = 1e5;
@@ -29,10 +23,9 @@ int BSUpperBound(int arr[], int N, int value) {
 }
 int BSLowerBound(int arr[], int N, int value) {
      int low = 0,high = N-1, mid;
-    while (low < high) { //No Equal Sign Needed
+    while (low < high) {
         //printarray(arr,low,high);
         mid = low+ (high-low)/2;
-
         if(arr[mid]>=value) {
             high = mid;
         } 
@@ -56,24 +49,55 @@ int BinarySearch(int arr[], int N, int value){
     return -1;
 
 }
-void Solution(){
-    int arr[] = {2, 5,5,5,5,5 ,23, 45, 78, 345, 768, 987, 1098, 1099};
-    int N= sizeof(arr)/sizeof(arr[0]);
-    
-    //cout<<BSLowerBound(arr,N,3);
-    for(int i=0; i<N; i++){
-        cout<<lower_bound(arr,arr+N,arr[i]+1)-arr<<" Lower Bound "<<BSLowerBound(arr,N,arr[i]+1)<<endl;
-
-        cout<<upper_bound(arr,arr+N,arr[i]+1)-arr<<" Upper Bound "<<BSUpperBound(arr,N,arr[i]+1)<<endl;
+long long int distance(int arr[], int n, int x){
+    long long int dis=0;
+    for(int i=0; i<n; i++){
+        dis+=abs(arr[i]-x);
     }
-    	
+    return dis;
 }
+void Solution1(){ //Bruteforce
+    int n,r, arr[30001], max, min;
+    cin>>n;
+    while(n--){ 
+        cin>>r;
+        for(int i=0; i<r; i++){
+            cin>>arr[i];
+            if(i==0)  {max= arr[i]; min = arr[i];}
+            else if(arr[i]>max) max= arr[i];
+            else if(arr[i]<min) min= arr[i];
 
+        }
+        long long int  ansdist;
+        for(int i=min; i<=max; i++)
+        {
+            long long int dis= distance(arr, r,i);
+            if(i==min) ansdist= dis;
+            else if(ansdist>dis) ansdist = dis;
+        }
+        printf("%d\n", ansdist); 
+    }
+}
+void Solution(){
+     int n,r, arr[(int)1e6];
+    cin>>n;
+    while(n--){ 
+        cin>>r;
+        for(int i=0; i<r; i++) cin>>arr[i];
+        sort(arr, arr+n);
+        int median = arr[r / 2];
+
+		int ans = 0;
+		for (int i = 0; i < r; i++) {
+			ans += abs(median - arr[i]);
+		}
+		printf("%d\n", ans);       
+    }
+
+}
 int main(){
 	ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    
 	Solution();
-	
 	return 0;
 }
