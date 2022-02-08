@@ -57,7 +57,7 @@ int BinarySearch(int arr[], int N, int value){
 }
 void Solution(){
     int arr[] = {2, 5,5,5,5,5 ,23, 45, 78, 345, 768, 987, 1098, 1099};
-    int N= 14;
+    int N= sizeof(arr)/sizeof(arr[0]);
     
     //cout<<BSLowerBound(arr,N,3);
     for(int i=0; i<N; i++){
