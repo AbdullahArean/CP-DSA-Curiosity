@@ -1,0 +1,21 @@
+Topic     : Binary Tree 
+Resources : https://techvidvan.com/tutorials/binary-tree-in-c/
+
+#What are Trees in C?
+As you know that arrays, linked lists, Stacks and Queues are linear data structures. 
+And on the other hand, Trees are hierarchical data structures. A tree includes multiple nodes. 
+In C, we call it a Binary Tree. A tree is referred to as a finite and non-empty set of elements in 
+mathematical terminology.
+
+#Tree Terminologies:-
+1. Root:- A root is a node without a parent. In the above image, 50 is the root node.
+2. Siblings:- Siblings mean that nodes which have the same parent node. In the above image, 17 and 72 are siblings because they have 50 in common.
+3. Internal Node:- Internal Node means that a node which has at least a single child. In the above image, 17, 72, 12, 23, 54 are internal nodes.
+4. External Node:- External Node means that a node which has no children. It is also known as leaf. In the above image, 67 and 76 are external nodes.
+5. Ancestors:- Ancestors include the parent, grandparent and so on of a node. In the above image, the ancestors of 23 are 17 and 50.
+6. Descendants:- Descendants are the opposite of ancestors, It includes the child, grandchild and so on of a node. In the above image, the descendants of 17 are 12,23,19,9,14 and 50.
+7. Edge:- An edge means a connection between one node to another node.
+8. Path:- Path is a combination of nodes and edges connected with each other. In the above image, 50 to 19 is a path.
+9. Depth:- You can calculate depth by the number of edges from node to the root of the tree.
+10. Height:- Height is the maximum depth of a node.
+11. Level:- Level of a node is equal to depth of the node+1.
