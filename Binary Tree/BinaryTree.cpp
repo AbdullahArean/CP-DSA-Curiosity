@@ -199,63 +199,89 @@ public:
         return binary_tree;
     }
 };
-int max(int arr[], int strt, int end)
+int search(int arr[], int strt, int end, int value)
 {
-    int i, max = arr[strt], maxind = strt;
-    for (i = strt + 1; i <= end; i++)
-    {
-        if (arr[i] > max)
-        {
-            max = arr[i];
-            maxind = i;
-        }
-    }
-    return maxind;
+	int i;
+	for (i = strt; i <= end; i++)
+	{
+		if (arr[i] == value)
+			return i;
+	}
+    return -1;
 }
-Node *build_tree_inorder(int inorder[], int start, int end)
+Node* newNode(int data)
 {
-    if (start > end)
-        return NULL;
-    int i = max(inorder, start, end);
-    Node *root = new Node(inorder[i]);
-    if (start == end)
-        return root;
-    root->left_child = build_tree_inorder(inorder, start, i - 1);
-    root->right_child = build_tree_inorder(inorder, i + 1, end);
-    return root;
+    Node* Nnode = new Node();
+    Nnode->data = data;
+    Nnode->left_child = NULL;
+    Nnode->right_child = NULL;
+ 
+    return (Nnode);
 }
-void Solution()
+Node* buildTree(int in[], int pre[], int inStrt, int inEnd)
 {
-    // BinaryTree t1 = BinaryTree();
-    // t1.insert(10);
-    // t1.insert(27);
-    // t1.insert(39);
-    // t1.insert(11);
-    // t1.insert(8);
-    // t1.insert(4);
-    // t1.insert(6);
-    // t1.insert(3);
-    // t1.insert(2);
-    // postorder
-    // preorder
-    // levelorder
-    int arr[] = {2, 3, 4, 6, 8, 10, 11, 27, 39};
-    // vector<int> preorder= {10,8,4,3,2,6,27,11,39} ;//preorder
+	static int preIndex = 0;
 
-    // vector<int> inorder = preordertoinorder(preorder);
-    BinaryTree t2 = BinaryTree(build_tree_inorder(arr, 0, 8));
-    Node * temp = t2.search(t2.Returntreehead(), 3);
-    if(temp==NULL) cout<<"Data Not Found"<<endl;
-    else printf("Data Found! %d",temp->data );
+	if (inStrt > inEnd)
+		return NULL;
+	Node* tNode = newNode(pre[preIndex++]);
 
+	if (inStrt == inEnd)
+		return tNode;
+	int inIndex = search(in, inStrt, inEnd, tNode->data);
+	tNode->left_child = buildTree(in, pre, inStrt, inIndex - 1);
+	tNode->right_child = buildTree(in, pre, inIndex + 1, inEnd);
+
+	return tNode;
 }
 
 int main()
 {
-    // ios_base::sync_with_stdio(false);
-    // cin.tie(NULL);
-
-    Solution();
-
-    return 0;
+    int n, in[MAXN],pre[MAXN];
+    cin>>n;
+    for(int i=0; i<n; i++) scanf("%d",&pre[i]);
+    for(int j=0; j<n; j++) scanf("%d",&in[j]);
+	int len = n;
+	Node* root = buildTree(in, pre, 0, len - 1);
+    BinaryTree t1 = BinaryTree(root);
+    t1.print_postorder(t1.Returntreehead());
+    printf("\n");
+    t1.print_levelorder(t1.Returntreehead());
+    printf("\n");
 }
+
+// void Solution()
+// {
+//     // BinaryTree t1 = BinaryTree();
+//     // t1.insert(10);
+//     // t1.insert(27);
+//     // t1.insert(39);
+//     // t1.insert(11);
+//     // t1.insert(8);
+//     // t1.insert(4);
+//     // t1.insert(6);
+//     // t1.insert(3);
+//     // t1.insert(2);
+//     // postorder
+//     // preorder
+//     // levelorder
+//     int arr[] = {2, 3, 4, 6, 8, 10, 11, 27, 39};
+//     // vector<int> preorder= {10,8,4,3,2,6,27,11,39} ;//preorder
+
+//     // vector<int> inorder = preordertoinorder(preorder);
+//     BinaryTree t2 = BinaryTree(build_tree_inorder(arr, 0, 8));
+//     Node * temp = t2.search(t2.Returntreehead(), 3);
+//     if(temp==NULL) cout<<"Data Not Found"<<endl;
+//     else printf("Data Found! %d",temp->data );
+
+// }
+
+// int main()
+// {
+//     // ios_base::sync_with_stdio(false);
+//     // cin.tie(NULL);
+
+//     Solution();
+
+//     return 0;
+// }
