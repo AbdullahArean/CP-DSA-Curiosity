@@ -1,12 +1,10 @@
 /*
-Problem Link  : Binary Search, Lower Bound and Upper Bound Implemented and matched with STL
-About Problem : Binary Search Implementation
-Tags          : 
-Notes         :
-        lower_bound returns an iterator pointing to the first element 
-        in the range [first,last) which has a value not less than ‘val’. 
-        upper_bound returns an iterator pointing to the first element in the 
-        range [first,last) which has a value greater than ‘val’. 
+Problem Link   : https://www.youtube.com/watch?v=W3-KgsCVH1U&list=PL_z_8CaSLPWeYfhtuKHj-9MpYb6XQJ_f2&index=9&ab_channel=AdityaVerma
+About Problem  : Aditya Verma Video Lecture 9
+Tags           : Binary Search
+Notes          :
+                1. Nearly Sorted Array : ith index might be in i+1th, ith index, or i-1th index
+        
  */
 
 #include<bits/stdc++.h>
@@ -85,7 +83,6 @@ int BinarySearch(int arr[], int N, int value){
     return -1;
 
 }
-//Modified Binary Search for returning Bounded
 int BinarySearchBounded(int arr[], int start, int end, int value){
    
     int low = start,high = end, mid;
@@ -99,17 +96,38 @@ int BinarySearchBounded(int arr[], int start, int end, int value){
     return -1;
 
 }
+int BSMinimumElementSortedRotatedArray(int arr[], int N){
+    //Modified binary Search to find the index of minimum elemnent in a sorted and rotated array
+    int low = 0,high = N-1, mid;
+    while(low<=high){ //Equal Sign is a must or else false result!
+        //printarray(arr,low,high);
+        mid = (high+low)/2;
+        if(arr[mid]<arr[mid+1] && arr[mid]<arr[mid-1]) return mid;
+        if(arr[mid]>arr[low])low=mid+1;
+        else if( arr[mid]<arr[high]) high = mid-1;
+    }
+    return -1;
+}
+int BinarySearchInNearlySortedArray(int arr[], int start, int end, int value){
+   //Find an element in nearly sorted array
+    int low = start,high = end, mid;
+    while(low<=high){ //Equal Sign is a must or else false result!
+        mid = (high+low)/2;
+        if(arr[mid]==value) return mid;
+        else if(arr[mid+1]==value) return mid+1;
+        else if(arr[mid-1]==value) return mid-1;
+        else if(arr[mid]>value) high=mid-2;
+        else if( arr[mid]<value) low = mid+2;
+    }
+    return -1;
+}
+
 void Solution(){
-    int arr[] = {2, 5,5,5,5,5 ,23, 45, 78, 345, 768, 987, 1098, 1099};
+    int arr[] = {1,30,20,40,50,60,70};
     int N= sizeof(arr)/sizeof(arr[0]);
     
-    //cout<<BSLowerBound(arr,N,3);
-    for(int i=0; i<N; i++){
-        cout<<lower_bound(arr,arr+N,arr[i]+1)-arr<<" Lower Bound "<<BSLowerBound(arr,N,arr[i]+1)<<endl;
-
-        cout<<upper_bound(arr,arr+N,arr[i]+1)-arr<<" Upper Bound "<<BSUpperBound(arr,N,arr[i]+1)<<endl;
-    }
-    	
+    cout<<BinarySearchInNearlySortedArray(arr,0,N-1,20)<<endl;
+  
 }
 
 int main(){
