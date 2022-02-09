@@ -16,61 +16,43 @@ void printarray(int arr[],int low, int high){
     for(int i=low; i<=high; i++) printf("%d ",arr[i]);
     printf("\n");
 }
-int BSUpperBound(int arr[], int N, int value) {
-    int low = 0,high = N-1, mid;
-    while (low < high) {
-        //printarray(arr,low,high);
-        mid = low+ (high-low)/2;
-        if(arr[mid]>value)  high = mid;
-        else low= mid+1;
-    }
-    if(value>=arr[N-1]) low++; //To match built in functions
-    return low;
-}
-int BSLowerBound(int arr[], int N, int value) {
-     int low = 0,high = N-1, mid;
-    while (low < high) { //No Equal Sign Needed
-        //printarray(arr,low,high);
-        mid = low+ (high-low)/2;
-
-        if(arr[mid]>=value) {
-            high = mid;
-        } 
+int LOWER_BOUND(int arr[], int N, int X)
+{
+    int MIDELEMENT;
+    int LOW = 0;
+    int HIGH = N;
+    while (LOW < HIGH) {
+        MIDELEMENT = LOW + (HIGH - LOW) / 2;
+        if (X <= arr[MIDELEMENT]) {
+            HIGH = MIDELEMENT;
+        }
         else {
-            low= mid+1;
+            LOW = MIDELEMENT + 1;
         }
     }
-    if(value>=arr[N-1]) low++; //To match built in functions
-    return low;
-}
-int BSUpperBoundBounded(int arr[], int start, int end, int value){
-   
-    int low = start,high = end, mid;
-    while (low < high) {
-        //printarray(arr,low,high);
-        mid = low+ (high-low)/2;
-        if(arr[mid]>value)  high = mid;
-        else low= mid+1;
+    if(LOW < N && arr[LOW] < X) {
+       LOW++;
     }
-    if(value>=arr[end]) low++; //To match built in functions
-    return low;
+    return LOW;
 }
-int BSLowerBoundBounded(int arr[], int start, int end, int value){
-   
-    int low = start,high = end, mid;
-    while (low < high) { //No Equal Sign Needed
-        //printarray(arr,low,high);
-        mid = low+ (high-low)/2;
-
-        if(arr[mid]>=value) {
-            high = mid;
-        } 
+int UPPER_BOUND(int arr[], int N, int X)
+{
+    int MIDELEMENT;
+    int LOW = 0;
+    int HIGH = N;
+    while (LOW < HIGH) {
+        MIDELEMENT = LOW + (HIGH - LOW) / 2;
+        if (X >= arr[MIDELEMENT]) {
+            LOW = MIDELEMENT + 1;
+        }
         else {
-            low= mid+1;
+            HIGH = MIDELEMENT;
         }
     }
-    if(value>=arr[end]) low++; //To match built in functions
-    return low;
+    if(LOW < N && arr[LOW] <= X) {
+       LOW++;
+    }
+    return LOW;
 }
 int BinarySearch(int arr[], int N, int value){
    
@@ -103,12 +85,7 @@ void Solution(){
     int arr[] = {2, 5,5,5,5,5 ,23, 45, 78, 345, 768, 987, 1098, 1099};
     int N= sizeof(arr)/sizeof(arr[0]);
     
-    //cout<<BSLowerBound(arr,N,3);
-    for(int i=0; i<N; i++){
-        cout<<lower_bound(arr,arr+N,arr[i]+1)-arr<<" Lower Bound "<<BSLowerBound(arr,N,arr[i]+1)<<endl;
-
-        cout<<upper_bound(arr,arr+N,arr[i]+1)-arr<<" Upper Bound "<<BSUpperBound(arr,N,arr[i]+1)<<endl;
-    }
+    
     	
 }
 
