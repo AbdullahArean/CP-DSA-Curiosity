@@ -119,11 +119,13 @@ public:
         }
     }
     int     numberofnodes       (Node *binary_tree){
-        if (binary_tree)
-        {
-            return numberofnodes(binary_tree->left_child)+numberofnodes(binary_tree->right_child)+1;
-        }
-        else return 0;
+        if (!binary_tree) return 0;
+        return numberofnodes(binary_tree->left_child)+numberofnodes(binary_tree->right_child)+1;
+
+    }
+    int     numberofleafs       (Node *binary_tree){
+        if (binary_tree && !binary_tree->left_child && !binary_tree->right_child) return 1;
+        return numberofnodes(binary_tree->left_child)+numberofnodes(binary_tree->right_child);
 
     }
     Node*   BuildTreePreIn      (int in[], int pre[], int inStrt, int inEnd)
@@ -163,5 +165,5 @@ int main()
     printf("\n");
     t1.print_levelorder(t1.Returntreehead());
     printf("\n");
-    cout<<t1.numberofnodes(t1.Returntreehead())<<endl;
+    cout<<t1.numberofleafs(t1.Returntreehead())<<endl;
 }
