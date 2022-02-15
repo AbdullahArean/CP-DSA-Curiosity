@@ -30,38 +30,38 @@ public:
     {
         this->binary_tree = NULL;
     }
-            BinaryTree          (Node *binary_tree)
+            BinaryTree          (Node *bbinary_tree)
     {
-        this->binary_tree = binary_tree;
+        this->binary_tree = bbinary_tree;
     }
-    void    print_preorder      (Node *binary_tree)
+    void    print_preorder      (Node *bbinary_tree)
     {
-        if (binary_tree)
+        if (bbinary_tree)
         {
-            printf("%d ", binary_tree->data);
-            print_preorder(binary_tree->left_child);
-            print_preorder(binary_tree->right_child);
+            printf("%d ", bbinary_tree->data);
+            print_preorder(bbinary_tree->left_child);
+            print_preorder(bbinary_tree->right_child);
         }
     }
-    void    print_inorder       (Node *binary_tree)
+    void    print_inorder       (Node *bbinary_tree)
     {
-        if (binary_tree)
+        if (bbinary_tree)
         {
-            print_inorder(binary_tree->left_child);
-            printf("%d ", binary_tree->data);
-            print_inorder(binary_tree->right_child);
+            print_inorder(bbinary_tree->left_child);
+            printf("%d ", bbinary_tree->data);
+            print_inorder(bbinary_tree->right_child);
         }
     }
-    void    print_postorder     (Node *binary_tree)
+    void    print_postorder     (Node *bbinary_tree)
     {
-        if (binary_tree)
+        if (bbinary_tree)
         {
-            print_postorder(binary_tree->left_child);
-            print_postorder(binary_tree->right_child);
-            printf("%d ", binary_tree->data);
+            print_postorder(bbinary_tree->left_child);
+            print_postorder(bbinary_tree->right_child);
+            printf("%d ", bbinary_tree->data);
         }
     }
-    int     height              (Node *binary_tree)
+    int     height              (Node *bbinary_tree)
     {
         int depth = 0;
 
@@ -94,38 +94,44 @@ public:
         }
         return depth;
     }
-    void    print_levelorder    (Node *binary_tree)
+    void    print_levelorder    (Node *bbinary_tree)
     {
         /* Function to line by line print level order traversal a tree*/
-        int h = height(binary_tree);
+        int h = height(bbinary_tree);
         int i;
         for (i = 1; i <= h; i++)
         {
-            printGivenLevel(binary_tree, i);
-            // printf("\n");
+            printGivenLevel(bbinary_tree, i);
+            //printf("\n");
         }
     }
-    void    printGivenLevel     (Node *binary_tree, int level)
+    void    printGivenLevel     (Node *bbinary_tree, int level)
     {
         /* Print nodes at a given level */
-        if (binary_tree == NULL)
+        if (bbinary_tree == NULL)
             return;
         if (level == 1)
-            printf("%d ", binary_tree->data);
+            printf("%d ", bbinary_tree->data);
         else if (level > 1)
         {
-            printGivenLevel(binary_tree->left_child, level - 1);
-            printGivenLevel(binary_tree->right_child, level - 1);
+            printGivenLevel(bbinary_tree->left_child, level - 1);
+            printGivenLevel(bbinary_tree->right_child, level - 1);
         }
     }
-    int     numberofnodes       (Node *binary_tree){
-        if (!binary_tree) return 0;
-        return numberofnodes(binary_tree->left_child)+numberofnodes(binary_tree->right_child)+1;
+    int     numberofnodes       (Node *bbinary_tree){
+        if (!bbinary_tree) return 0;
+        return numberofnodes(bbinary_tree->left_child)+numberofnodes(bbinary_tree->right_child)+1;
 
     }
-    int     numberofleafs       (Node *binary_tree){
-        if (binary_tree && !binary_tree->left_child && !binary_tree->right_child) return 1;
-        return numberofnodes(binary_tree->left_child)+numberofnodes(binary_tree->right_child);
+    int     numberofleafs       (Node *bbinary_tree){
+        if(!bbinary_tree) return 0;
+        if (!bbinary_tree->left_child && !bbinary_tree->right_child) return 1;
+        return numberofleafs (bbinary_tree->left_child)+numberofleafs (bbinary_tree->right_child);
+
+    }
+    int     numberofnonleafs    (Node *bbinary_tree){
+       if((!bbinary_tree) || (!bbinary_tree->left_child && !bbinary_tree->right_child) )return 0;
+        return numberofnonleafs (bbinary_tree->left_child)+numberofnonleafs (bbinary_tree->right_child)+1;
 
     }
     Node*   BuildTreePreIn      (int in[], int pre[], int inStrt, int inEnd)
@@ -165,5 +171,7 @@ int main()
     printf("\n");
     t1.print_levelorder(t1.Returntreehead());
     printf("\n");
+    cout<<t1.numberofnodes(t1.Returntreehead())<<endl;
+    cout<<t1.numberofnonleafs(t1.Returntreehead())<<endl;
     cout<<t1.numberofleafs(t1.Returntreehead())<<endl;
 }
