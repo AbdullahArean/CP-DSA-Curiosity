@@ -34,6 +34,19 @@ public:
     {
         this->binary_tree = bbinary_tree;
     }
+    void    Insert              (Node **bbinary_tree, int value) 
+    {
+        if(!(bbinary_tree)) 
+        {
+            *bbinary_tree = new Node(value);
+            return;
+        }
+        if(value < (*bbinary_tree)->data) 
+            Insert(&(*bbinary_tree)->left_child, value);
+        else if(value > (*bbinary_tree)->data) 
+            Insert(&(*bbinary_tree)->right_child, value);
+
+    }
     void    print_preorder      (Node *bbinary_tree)
     {
         if (bbinary_tree)
@@ -107,7 +120,7 @@ public:
     }
     void    printGivenLevel     (Node *bbinary_tree, int level)
     {
-        /* Print nodes at a given level */
+        /* Print Nodes at a given level */
         if (bbinary_tree == NULL)
             return;
         if (level == 1)
@@ -118,9 +131,9 @@ public:
             printGivenLevel(bbinary_tree->right_child, level - 1);
         }
     }
-    int     numberofnodes       (Node *bbinary_tree){
+    int     numberofNodes       (Node *bbinary_tree){
         if (!bbinary_tree) return 0;
-        return numberofnodes(bbinary_tree->left_child)+numberofnodes(bbinary_tree->right_child)+1;
+        return numberofNodes(bbinary_tree->left_child)+numberofNodes(bbinary_tree->right_child)+1;
 
     }
     int     numberofleafs       (Node *bbinary_tree){
@@ -130,9 +143,15 @@ public:
 
     }
     int     numberofnonleafs    (Node *bbinary_tree){
-       if((!bbinary_tree) || (!bbinary_tree->left_child && !bbinary_tree->right_child) )return 0;
-        return numberofnonleafs (bbinary_tree->left_child)+numberofnonleafs (bbinary_tree->right_child)+1;
+        if((!bbinary_tree) || (!bbinary_tree->left_child && !bbinary_tree->right_child) )return 0;
+            return numberofnonleafs (bbinary_tree->left_child)+numberofnonleafs (bbinary_tree->right_child)+1;
 
+    }
+    int     numberoffullNode    (Node *bbinary_tree){
+        if(!bbinary_tree) return 0;
+        if(!bbinary_tree->left_child && !bbinary_tree->right_child ) return 0;
+        return numberoffullNode(bbinary_tree->left_child)+numberoffullNode(bbinary_tree->right_child)+ (bbinary_tree->left_child && bbinary_tree->right_child)?1:0;
+       
     }
     Node*   BuildTreePreIn      (int in[], int pre[], int inStrt, int inEnd)
     {
@@ -159,19 +178,23 @@ public:
 
 int main()
 {
-    int n, in[MAXN], pre[MAXN];
-    cin >> n;
-    for (int i = 0; i < n; i++)
-        scanf("%d", &pre[i]);
-    for (int j = 0; j < n; j++)
-        scanf("%d", &in[j]);
+    // int n, in[MAXN], pre[MAXN];
+    // cin >> n;
+    // for (int i = 0; i < n; i++)
+    //     scanf("%d", &pre[i]);
+    // for (int j = 0; j < n; j++)
+    //     scanf("%d", &in[j]);
+    // BinaryTree t1;
+    // t1.BuildTree(in, pre, 0, n - 1);
+    // t1.print_postorder(t1.Returntreehead());
+    // printf("\n");
+    // t1.print_levelorder(t1.Returntreehead());
+    // printf("\n");
+    // cout<<t1.numberofNodes(t1.Returntreehead())<<endl;
+    // cout<<t1.numberofnonleafs(t1.Returntreehead())<<endl;
+    // cout<<t1.numberofleafs(t1.Returntreehead())<<endl;
+    // cout<<t1.numberoffullNode(t1.Returntreehead())<<endl;
     BinaryTree t1;
-    t1.BuildTree(in, pre, 0, n - 1);
-    t1.print_postorder(t1.Returntreehead());
-    printf("\n");
-    t1.print_levelorder(t1.Returntreehead());
-    printf("\n");
-    cout<<t1.numberofnodes(t1.Returntreehead())<<endl;
-    cout<<t1.numberofnonleafs(t1.Returntreehead())<<endl;
-    cout<<t1.numberofleafs(t1.Returntreehead())<<endl;
+    t1.Insert(&(&(t1.Returntreehead())),12);
+
 }
