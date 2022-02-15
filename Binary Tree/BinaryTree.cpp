@@ -34,19 +34,7 @@ public:
     {
         this->binary_tree = bbinary_tree;
     }
-    void    Insert              (Node **bbinary_tree, int value) 
-    {
-        if(!(bbinary_tree)) 
-        {
-            *bbinary_tree = new Node(value);
-            return;
-        }
-        if(value < (*bbinary_tree)->data) 
-            Insert(&(*bbinary_tree)->left_child, value);
-        else if(value > (*bbinary_tree)->data) 
-            Insert(&(*bbinary_tree)->right_child, value);
-
-    }
+   
     void    print_preorder      (Node *bbinary_tree)
     {
         if (bbinary_tree)
@@ -175,7 +163,20 @@ public:
         return binary_tree;
     }
 };
+//  void    Insert              (Node **bbinary_tree, int value) 
+//     {
+//         if(!(bbinary_tree)) 
+//         {
+//             *bbinary_tree = new Node(value);
+//             return;
+//         }
+//         if(value < (*bbinary_tree)->data) 
+//             Insert(&(*bbinary_tree)->left_child, value);
+//         else if(value > (*bbinary_tree)->data) 
+//             Insert(&(*bbinary_tree)->right_child, value);
 
+//     }
+//Binary Search Tree Insert and search function not working
 int main()
 {
     // int n, in[MAXN], pre[MAXN];
@@ -194,7 +195,10 @@ int main()
     // cout<<t1.numberofnonleafs(t1.Returntreehead())<<endl;
     // cout<<t1.numberofleafs(t1.Returntreehead())<<endl;
     // cout<<t1.numberoffullNode(t1.Returntreehead())<<endl;
-    BinaryTree t1;
-    t1.Insert(&(&(t1.Returntreehead())),12);
+    
+    // t1.Insert(t1.Returntreehead(),12);
+    // Node *root_node = NULL;
+    // Insert(&root_node, 10);
+    // BinaryTree t1 = BinaryTree(root_node);
 
 }
