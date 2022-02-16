@@ -1,14 +1,23 @@
-#include<iostream>
+//12
+//12
+//12
+//12
+//12
+//12
+#include<bits/stdc++.h>
 using namespace std;
+const int MAXN = 1e5;
 class Node
 {
 public:
     int data;
+    int count;
     Node *left_child;
     Node *right_child;
     Node(int data)
     {
         this->data = data;
+        this->count = 1;
         this->left_child = NULL;
         this->right_child = NULL;
     }
@@ -30,6 +39,8 @@ public:
     {
         if(Current_Tree_Node == NULL) 
             Current_Tree_Node = new Node(x);
+        else if(Current_Tree_Node->data==x) 
+            Current_Tree_Node->count++;
         else if(x < Current_Tree_Node->data)
             Current_Tree_Node->left_child = insert(x, Current_Tree_Node->left_child);
         else if(x > Current_Tree_Node->data)
@@ -61,7 +72,11 @@ public:
             Current_Tree_Node->left_child = remove(x, Current_Tree_Node->left_child);
         else if(x > Current_Tree_Node->data)
             Current_Tree_Node->right_child = remove(x, Current_Tree_Node->right_child);
-        else if(Current_Tree_Node->left_child && Current_Tree_Node->right_child)
+        else if(Current_Tree_Node->data==x && Current_Tree_Node->count>1) {
+            Current_Tree_Node->count--;
+            return Current_Tree_Node;
+        }
+        else if(Current_Tree_Node->count==1 && Current_Tree_Node->left_child && Current_Tree_Node->right_child)
         {
             temp = findMin(Current_Tree_Node->right_child);
             Current_Tree_Node->data = temp->data;
@@ -86,6 +101,7 @@ public:
         cout << Current_Tree_Node->data << " ";
         inorder(Current_Tree_Node->right_child);
     }
+    
     Node* find(Node* Current_Tree_Node, int x) {
         if(Current_Tree_Node == NULL)
             return NULL;
@@ -96,6 +112,8 @@ public:
         else
             return Current_Tree_Node;
     }
+    
+   
     BST() {
         Binary_Tree_Root = NULL;
     }
@@ -112,25 +130,54 @@ public:
         inorder(Binary_Tree_Root);
         cout << endl;
     }
-    void search(int x) {
-        Binary_Tree_Root = find(Binary_Tree_Root, x);
+    bool search(int x) {
+        if(find(Binary_Tree_Root, x)) return 1;
+        return 0;
     }
-};
 
-int main() {
-    BST Current_Tree_Node;
-    Current_Tree_Node.insert(29);
-    Current_Tree_Node.insert(28);
-    Current_Tree_Node.insert(25);
-    Current_Tree_Node.insert(10);
-    Current_Tree_Node.insert(30);
-    Current_Tree_Node.display();
-    Current_Tree_Node.remove(20);
-    Current_Tree_Node.display();
-    Current_Tree_Node.remove(25);
-    Current_Tree_Node.display();
-    Current_Tree_Node.remove(30);
-    Current_Tree_Node.display();
-    cout<<Current_Tree_Node.findMax(Current_Tree_Node.Binary_Tree_Root)->data<<endl;
-    return 0; 
+   
+};
+void inorder2(Node* Current_Tree_Node,vector<int>& v) 
+    {
+        if(Current_Tree_Node == NULL)
+            return;
+        if (Current_Tree_Node->left_child)
+            inorder2(Current_Tree_Node->left_child,v);
+        v.push_back(Current_Tree_Node->data);
+        if (Current_Tree_Node->right_child)
+            inorder2(Current_Tree_Node->right_child,v);
+    }
+int main()
+{
+    int n, q,x;
+    BST t1;
+    char c;
+    cin>>n>>q;
+    while(n--) {cin>>x; t1.insert(x);}
+    //cin>>c;
+    for(int i=0; i<q; i++)
+    {
+        cin>>c>>x;
+         if(c=='I')
+         {
+           t1.insert(x);
+
+         }
+        else if(c=='D'){
+        if(t1.search(x)) t1.remove(x);
+        }
+        else if(c=='S'){
+            vector<int> v1;
+            inorder2(t1.Binary_Tree_Root,v1);
+            sort(v1.begin(), v1.end());
+            //for(int i=0; i<3; i++) cout<<v1[i]<<endl;
+            if(x<v1[0]) printf("%d\n", v1[0]);
+            else if(x>=v1[v1.size()-1]) printf("No such number\n");
+            else cout<<*upper_bound(v1.begin(), v1.end(),x)<<endl;
+            
+            
+        }
+        //t1.display();
+    }
+
 }

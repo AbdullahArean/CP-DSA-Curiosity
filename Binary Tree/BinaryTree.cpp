@@ -34,7 +34,6 @@ public:
     {
         this->binary_tree = bbinary_tree;
     }
-   
     void    print_preorder      (Node *bbinary_tree)
     {
         if (bbinary_tree)
