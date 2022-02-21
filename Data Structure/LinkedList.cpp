@@ -4,19 +4,19 @@ class Node
 {
 public:
 	int data;
-    Node *next;
-    Node *previous; 
+	Node *next;
+	Node *previous;
 	Node()
 	{
 		data = 0;
 		next = NULL;
-        previous = NULL;
+		previous = NULL;
 	}
 	Node(int data)
 	{
 		this->data = data;
 		this->next = NULL;
-        this->previous = NULL;
+		this->previous = NULL;
 	}
 };
 class LinkedList
@@ -24,12 +24,39 @@ class LinkedList
 private:
 	Node *LinkedListHead;
 	int LengthOfLinkedList;
+	Node *ReverseRecursion(Node *current)
+	{
+
+		if (current == NULL || current->next == NULL)
+			return current;
+		Node *newhead = ReverseRecursion(current->next);
+		current->next->next = current;
+		current->next = NULL;
+		return newhead;
+	}
+	Node *ReverseIterative(Node *current)
+	{
+		Node *prev = NULL, *next = NULL;
+		while (current != NULL)
+		{
+			next = current->next;
+			current->next = prev;
+			prev = current;
+			current = next;
+		}
+		return prev;
+	}
+
 public:
 	LinkedList()
 	{
 		LinkedListHead = NULL;
 		LengthOfLinkedList = 0;
-	}  
+	}
+	LinkedList(Node *head)
+	{
+		this->LinkedListHead = head;
+	}
 	int Length()
 	{
 		return this->LengthOfLinkedList;
@@ -37,7 +64,8 @@ public:
 	void InsertNode(int data, int position)
 	{
 		Node *newNode = new Node(data);
-        if(position<0) printf("Invalid Position!\n");
+		if (position < 0)
+			printf("Invalid Position!\n");
 		else if (LinkedListHead == NULL)
 		{
 			newNode->next = NULL;
@@ -90,7 +118,7 @@ public:
 		}
 		if (this->LengthOfLinkedList <= position)
 		{
-			cout << "Invalid Position!"<< endl;
+			cout << "Invalid Position!" << endl;
 			return;
 		}
 		if (position == 0)
@@ -112,9 +140,121 @@ public:
 		this->LengthOfLinkedList--;
 		return;
 	}
-	Node *ReturnLinkedListHead() {return LinkedListHead;}
+	Node *ReturnLinkedListHead() { return LinkedListHead; }
+	void ReverseIterative()
+	{
+		this->LinkedListHead = ReverseIterative(this->LinkedListHead);
+	}
+	void ReverseRecursion()
+	{
+		this->LinkedListHead = ReverseRecursion(this->LinkedListHead);
+	}
 };
+Node *Reversevariation(Node *current, int k)
+{
+	int count = k;
+	Node *prev = NULL, *next = NULL, *temp2 = current, *temp1 = NULL, *tempfinal= NULL;
+	while (current != NULL)
+	{
+		count = k;
+		prev = NULL, next = NULL, temp2=current;
+		while (current != NULL && count--)
+		{
+			next = current->next;
+			current->next = prev;
+			prev = current;
+			current = next;
+		}
+		if(temp1==NULL) tempfinal=prev;
+		if(temp1!=NULL){
+			temp1->next=prev;
+		}
+		temp1=temp2;
+	}
+	return tempfinal;
+}
+/*
+Loop 	Related Problem
+//solution using map //
+time – O(n)
+space-O(n)
+
+    bool detectLoop(Node* head)
+   {
+       // your code here
+       map<Node*,bool>visited;
+       Node* temp=head;
+       while(temp!=NULL)
+       {
+           if(visited[temp]==true)
+           {
+               return true;
+           }
+           visited[temp]=true;
+           temp=temp->next;
+       }
+       return false;
+       
+   }
+
+// O(n) time complexity and O(1) Auxiliary Space 
+bool detectLoop(Node* head)
+    {
+        // your code here
+        Node*cur=head;
+        if(head==NULL)
+            return false;
+        while(cur!=NULL)
+        {
+            if(cur->data<0)
+                return true;
+            else
+            {
+                cur->data=-(cur->data);
+            }
+            cur=cur->next;
+        }
+        return false;
+    }
+void removeLoop(Node* head)
+    {
+       // hash map to hash addresses of the linked list nodes
+    unordered_map<Node*, int> node_map;
+    // pointer to last node
+    Node* last = NULL;
+    while (head != NULL) {
+        // if node not present in the map, insert it in the map
+        if (node_map.find(head) == node_map.end()) {
+            node_map[head]++;
+            last = head;
+            head = head->next;
+        }
+        // if present, it is a cycle, make the last node's next pointer NULL
+        else {
+            last->next = NULL;
+            break;
+        }
+    }
+*/
 int main()
 {
+	LinkedList l;
+	l.InsertNode(1, 0);
+	l.InsertNode(2, 1);
+	l.InsertNode(3, 2);
+	l.InsertNode(4, 3);
+	l.InsertNode(5, 4);
+	l.InsertNode(6, 5);
+	l.InsertNode(7, 6);
+	l.InsertNode(8, 7);
+	l.InsertNode(9, 8);
+	// l.PrintList();
+	// l.ReverseIterative();
+	// l.PrintList();
+	// l.ReverseRecursion();
+	l.PrintList();
+	Node *temp = Reversevariation(l.ReturnLinkedListHead(), 3);
+	LinkedList l2 = LinkedList(temp);
+	l2.PrintList();
 	return 0;
 }

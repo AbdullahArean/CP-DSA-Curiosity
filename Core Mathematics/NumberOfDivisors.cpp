@@ -16,6 +16,7 @@ void SieveOfEratosthenes(int n, bool prime[],bool primesquare[], int a[])
 		primesquare[i] = false;
 	prime[1] = false;
 
+	//Just Doing Plain Sieve
 	for (int p = 2; p * p <= n; p++) {
 		if (prime[p] == true) {
 			for (int i = p * p; i <= n; i += p)

@@ -12,27 +12,28 @@ void Solution()
         bool flag= 1;
         int n, temp;
         cin >> n;
-        stack<int> even;
-        stack<int> odd;
+        int even=-1;
+        int odd=-1;
         for (int i = 0; i < n; i++)
         {
             cin >> temp;
-            if(temp%2)
+            if(temp%2==0)
             {
-                if(odd.size()>0 && odd.top()>temp) {
+                if(even!=-1 && even>temp) {
                     flag=0;
                 }
-                odd.push(temp);
+                even=temp;
 
             }
-            else {
-                if(even.size()>0 && even.top()>temp) {
+            else 
+            {
+               
+                if(odd!=-1 && odd>temp) {
                     flag=0;
                 }
-                even.push(temp);
+                odd= temp;
 
             }
-
         }
 
     if(flag) printf("Yes\n");
