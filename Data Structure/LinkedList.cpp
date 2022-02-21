@@ -107,38 +107,43 @@ public:
 		}
 		cout << "\n";
 	}
-	void DeleteNode(int position)
-	{
-		Node *temp1 = LinkedListHead, *temp2 = NULL;
-		if (this->LengthOfLinkedList == 0)
-		{
-			cout << "List is empty!" << endl;
-			return;
-		}
-		if (this->LengthOfLinkedList <= position)
-		{
-			cout << "Invalid Position!" << endl;
-			return;
-		}
-		if (position == 0)
-		{
-			LinkedListHead = LinkedListHead->next;
-			delete temp1;
-			return;
-		}
-		while (position-- > 0)
-		{
-
-			temp2 = temp1;
-			temp1 = temp1->next;
-		}
-
-		temp2->next = temp1->next;
-
-		delete temp1;
-		this->LengthOfLinkedList--;
-		return;
-	}
+	/* Given a reference (pointer to pointer) to the head of a list 
+   and a position, deletes the node at the given position */
+	void deleteNode(int position) 
+{ 
+   // If linked list is empty 
+   if (this->LinkedListHead == NULL) 
+      return; 
+  
+   // Store head node 
+    Node* temp = this->LinkedListHead; 
+  
+    // If head needs to be removed 
+    if (position == 0) 
+    { 
+        this->LinkedListHead = temp->next;   // Change head 
+        free(temp);               // free old head 
+        return; 
+    } 
+  
+    // Find previous node of the node to be deleted 
+    for (int i=0; temp!=NULL && i<position-1; i++) 
+         temp = temp->next; 
+  
+    // If position is more than number of ndoes 
+    if (temp == NULL || temp->next == NULL) 
+         return; 
+  
+    // Node temp->next is the node to be deleted 
+    // Store pointer to the next of node to be deleted 
+    Node *next = temp->next->next; 
+  
+    // Unlink the node from linked list 
+    free(temp->next);  // Free memory 
+  
+    temp->next = next;  // Unlink the deleted node from list 
+} 
+  
 	Node *ReturnLinkedListHead() 
 	{ return LinkedListHead; }
 	void ReverseIterative()
@@ -253,6 +258,103 @@ public:
 	}
 	return 0;
 }
+	void movethelastelefirst(Node * head){
+		Node * cur = head, *store= head, *temp=NULL;
+		while(cur!=NULL){
+			if(cur->next && cur->next->next==NULL){
+				temp = cur->next;
+				temp->next = store;
+				cur->next = NULL;
+			 }
+			cur=cur->next;
+		}
+		this->LinkedListHead= temp;
+
+	}
+	Node* addOne(Node* head){
+        head =ReverseIterative(head);
+		Node * cur= head, *store =NULL;
+		short int onhand= 1;
+		while(cur!=NULL && onhand) {
+
+			if(cur->next==NULL) store =cur;
+			if(cur->data<9) {
+				cur->data++;
+				onhand = 0;
+
+			}
+			else if(cur->data==9) {
+				cur->data=0;
+				onhand = 1;
+			}
+
+			cur= cur->next;
+		}
+		if(onhand) store->next = new Node(onhand);
+		head =ReverseIterative(head);
+		return head;
+
+	}
+	void printMiddle(Node *head){
+		//Delete middle is also easy
+        Node *slow_ptr = head;
+        Node *fast_ptr = head;
+		//Node * store = NULL; //To delete the middle element 
+  
+        if (head!=NULL)
+        {
+            while (fast_ptr && fast_ptr->next)
+            {
+                fast_ptr = fast_ptr->next->next;
+                slow_ptr = slow_ptr->next;
+				//if(fast_ptr->next) store = slow_ptr; //To delete the middle element 
+            }
+            cout << "The middle element is [" << slow_ptr->data << "]" << endl;
+			//store->next= slow_ptr->next;//To delete the middle element 
+        }
+    }
+	void swapNodes(int x, int y)
+{/* Function to swap nodes x and y in linked list by
+changing links */
+    // Nothing to do if x and y are same
+    if (x == y)
+        return;
+ 
+    // Search for x (keep track of prevX and CurrX
+    Node *prevX = NULL, *currX = this->LinkedListHead;
+    while (currX && currX->data != x) {
+        prevX = currX;
+        currX = currX->next;
+    }
+ 
+    // Search for y (keep track of prevY and CurrY
+    Node *prevY = NULL, *currY = this->LinkedListHead;
+    while (currY && currY->data != y) {
+        prevY = currY;
+        currY = currY->next;
+    }
+ 
+    // If either x or y is not present, nothing to do
+    if (currX == NULL || currY == NULL)
+        return;
+ 
+    // If x is not head of linked list
+    if (prevX != NULL)
+        prevX->next = currY;
+    else // Else make y as new head
+        this->LinkedListHead = currY;
+ 
+    // If y is not head of linked list
+    if (prevY != NULL)
+        prevY->next = currX;
+    else // Else make x as new head
+        this->LinkedListHead = currX;
+ 
+    // Swap next pointers
+    Node* temp = currY->next;
+    currY->next = currX->next;
+    currX->next = temp;
+}
 };
 /*
 Loop 	Related Problem
@@ -328,8 +430,7 @@ void removeLoop(Node* head)
 			break;
 		}
 	}
-*/
-/*
+
 //Function to remove duplicates from sorted linked list.
 link: https://practice.geeksforgeeks.org/problems/remove-duplicate-element-from-sorted-linked-list/1
 Node *removeDuplicates(Node *head)
@@ -344,26 +445,37 @@ Node *removeDuplicates(Node *head)
 	tempstore1->next= NULL;
 	return head;
 }
+	
+//Push onto a linked list
+	void push(Node** LinkedListHead, int new_data)
+{
+    Node* new_node = new Node();
+    new_node->data = new_data;
+    new_node->next = (*LinkedListHead);
+    (*LinkedListHead) = new_node;
+}
+
+Add two numbers ::https://www.geeksforgeeks.org/add-two-numbers-represented-by-linked-lists/
 */
+
 
 int main()
 {
 	LinkedList l;
 	l.InsertNode(1, 0);
 	l.InsertNode(2, 1);
-	l.InsertNode(2, 2);
-	l.InsertNode(7, 3);
-	l.InsertNode(7, 4);
-	l.InsertNode(6, 5);
-	l.InsertNode(7, 6);
-	l.InsertNode(8, 7);
-	l.InsertNode(9, 8);
-	// l.PrintList();
-	// l.ReverseIterative();
-	// l.PrintList();
-	// l.ReverseRecursion();
+	l.InsertNode(4, 2);
+	l.InsertNode(4, 3);
+	l.InsertNode(9, 4);
+	l.InsertNode(9, 5);
+	l.InsertNode(29, 6);
+	l.InsertNode(92, 7);
+	l.InsertNode(29, 8);
 	l.PrintList();
-	l.removeDuplicates2(l.ReturnLinkedListHead());
+	l.swapNodes(1,29);
+	l.printMiddle(l.ReturnLinkedListHead());
 	l.PrintList();
+
+	
 	return 0;
 }
