@@ -355,6 +355,23 @@ changing links */
     currY->next = currX->next;
     currX->next = temp;
 }
+//Function to check whether the list is palindrome.
+    bool isPalindrome(Node *head)
+    {
+        Node* temp = head;
+        string str1, str2;
+        while(temp)
+        {
+            str1 = str1 + to_string(temp->data);
+            str2 = to_string(temp->data) + str2;
+            temp = temp->next;
+        }
+        
+        if(str1 == str2)
+        return true;
+        
+        return false;
+    }
 };
 /*
 Loop 	Related Problem
@@ -456,9 +473,67 @@ Node *removeDuplicates(Node *head)
 }
 
 Add two numbers ::https://www.geeksforgeeks.org/add-two-numbers-represented-by-linked-lists/
+
+
+Link:https://practice.geeksforgeeks.org/problems/intersection-point-in-y-shapped-linked-lists/1# 
+//Function to find intersection point in Y shaped Linked Lists.
+int intersectPoint(Node* head1, Node* head2)
+{
+    unordered_map<Node *, int> map;
+    Node *it1= head1, *it2= head2;
+    while(it1!= NULL){
+        
+        //cout<<it1->data<<endl;
+        map[it1]=1;
+        it1= it1->next;
+    }
+    while(it2!=NULL){
+        
+       //cout<<it2->data<<endl;
+       map[it2]++;
+       if(map[it2]>1) return it2->data;
+        it2= it2->next;
+    }
+    
+    return -1;
+}
+Link: https://practice.geeksforgeeks.org/problems/split-a-circular-linked-list-into-two-halves/1
+void splitCircularList(Node *head, Node **head1_ref, Node **head2_ref)
+{   
+   Node* fast = head;
+   Node* slow = head;
+   *head1_ref = head;
+   
+   while(fast->next!=head && fast->next->next!=head){
+       slow = slow->next;
+       fast = fast->next->next;
+   }
+   *head2_ref = slow->next;
+   Node* temp = *head2_ref;
+   slow->next = *head1_ref ;
+   while(temp->next!=head){
+       temp = temp->next;
+   }
+   temp->next = *head2_ref;
+}
+//Function to check whether the list is palindrome.
+    bool isPalindrome(Node *head)
+    {
+        Node* temp = head;
+        string str1, str2;
+        while(temp)
+        {
+            str1 = str1 + to_string(temp->data);
+            str2 = to_string(temp->data) + str2;
+            temp = temp->next;
+        }
+        
+        if(str1 == str2)
+        return true;
+        
+        return false;
+    }
 */
-
-
 int main()
 {
 	LinkedList l;
@@ -472,9 +547,7 @@ int main()
 	l.InsertNode(92, 7);
 	l.InsertNode(29, 8);
 	l.PrintList();
-	l.swapNodes(1,29);
-	l.printMiddle(l.ReturnLinkedListHead());
-	l.PrintList();
+	
 
 	
 	return 0;
