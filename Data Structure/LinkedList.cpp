@@ -22,9 +22,9 @@ public:
 class LinkedList
 {
 private:
-	Node *LinkedListHead;
-	int LengthOfLinkedList;
-	Node *ReverseRecursion(Node *current)
+	Node 	*LinkedListHead;
+	int 	LengthOfLinkedList;
+	Node 	*ReverseRecursion(Node *current)
 	{
 
 		if (current == NULL || current->next == NULL)
@@ -34,7 +34,7 @@ private:
 		current->next = NULL;
 		return newhead;
 	}
-	Node *ReverseIterative(Node *current)
+	Node 	*ReverseIterative(Node *current)
 	{
 		Node *prev = NULL, *next = NULL;
 		while (current != NULL)
@@ -46,21 +46,77 @@ private:
 		}
 		return prev;
 	}
+	void 	partition(Node *head, Node **front, Node **back)
+{
+	Node *fast, *slow;
+	if (head == NULL || head->next == NULL){
+		*front = head; // &a
+		*back = NULL; //&b
+	}
+	else{
+		slow = head;
+		fast = head->next;
+
+		while(fast!=NULL){
+			fast = fast->next;
+			if(fast != NULL) {
+				slow = slow->next;
+				fast = fast->next;
+			}
+
+		}
+		*front = head; // &a
+		*back = slow->next; //&b
+		slow->next = NULL;
+	}
+}
+	Node 	*mergeLists(Node* a, Node *b)
+{
+	Node * mergedList= NULL;
+	if (a == NULL){
+        return b;
+    }else if (b == NULL){
+        return a;
+    }
+
+	if(a->data<= b->data){
+		mergedList = a;
+		mergedList->next= mergeLists(a->next,b);
+	}
+	else 
+	{
+		mergedList =b;
+		mergedList->next = mergeLists(a, b->next);
+	}
+	return mergedList;
+}
+	void 	mergeSort(Node* *source){
+	Node* head= *source;
+	Node *a= NULL, *b= NULL;
+	if(head == NULL || head->next == NULL) return;
+
+	partition(head, &a, &b);
+	mergeSort(&a);
+	mergeSort(&b);
+
+	*source = mergeLists(a,b);
+
+}
 public:
-	LinkedList()
+				LinkedList()
 	{
 		LinkedListHead = NULL;
 		LengthOfLinkedList = 0;
 	}
-	LinkedList(Node *head)
+				LinkedList(Node *head)
 	{
 		this->LinkedListHead = head;
 	}
-	int Length()
+	int 		Length()
 	{
 		return this->LengthOfLinkedList;
 	}
-	void InsertNode(int data, int position)
+	void 		InsertNode(int data, int position)
 	{
 		Node *newNode = new Node(data);
 		if (position < 0)
@@ -92,7 +148,7 @@ public:
 		}
 		LengthOfLinkedList++;
 	}
-	void PrintList()
+	void 		PrintList()
 	{
 		Node *temp = LinkedListHead;
 		if (LinkedListHead == NULL)
@@ -107,9 +163,7 @@ public:
 		}
 		cout << "\n";
 	}
-	/* Given a reference (pointer to pointer) to the head of a list 
-   and a position, deletes the node at the given position */
-	void deleteNode(int position) 
+	void 		deleteNode(int position) 
 { 
    // If linked list is empty 
    if (this->LinkedListHead == NULL) 
@@ -142,19 +196,18 @@ public:
     free(temp->next);  // Free memory 
   
     temp->next = next;  // Unlink the deleted node from list 
-} 
-  
-	Node *ReturnLinkedListHead() 
+}   
+	Node 		*ReturnLinkedListHead() 
 	{ return LinkedListHead; }
-	void ReverseIterative()
+	void 		ReverseIterative()
 	{
 		this->LinkedListHead = ReverseIterative(this->LinkedListHead);
 	}
-	void ReverseRecursion()
+	void 		ReverseRecursion()
 	{
 		this->LinkedListHead = ReverseRecursion(this->LinkedListHead);
 	}
-	void removeDuplicates(struct Node *head)
+	void 		removeDuplicates(struct Node *head)
 	{
 		Node *temp = head, *tempstore1 = NULL;
 		while (temp != NULL)
@@ -169,7 +222,7 @@ public:
 			temp = temp->next;
 		}
 	}
-	Node *removeDuplicates2(Node *head)
+	Node 		*removeDuplicates2(Node *head)
 	{ //Unsorted
 		vector<bool> v(100000, false);
 		Node *temp = head, *tempstore = NULL;
@@ -191,7 +244,7 @@ public:
 
 		return head;
 	}
-	Node *Reversevariation(Node *current, int k)
+	Node 		*Reversevariation(Node *current, int k)
 {
 	int count = k;
 	Node *prev = NULL, *next = NULL, *temp2 = current, *temp1 = NULL, *tempfinal = NULL;
@@ -216,7 +269,7 @@ public:
 	}
 	return tempfinal;
 }
-	Node *deleteDuplicates(Node *head)
+	Node 		*deleteDuplicates(Node *head)
 {
 //Link:https:// leetcode.com/problems/remove-duplicates-from-sorted-list-ii/
 //Link: https://caring-august-d6b.notion.site/Remove-Duplicates-in-Linked-List-18cbb228467842d08e53867c6ed595da
@@ -249,7 +302,10 @@ public:
 
 	return NewHead->next;
 }
-	bool detectLoop(Node * head){
+	void 		sort(){
+	mergeSort(&this->LinkedListHead);
+}
+	bool 		detectLoop(Node * head){
 	Node * slow_p= head, *fast_p = head;
 	while(slow_p && fast_p && fast_p->next){
 		slow_p=slow_p->next;
@@ -258,7 +314,7 @@ public:
 	}
 	return 0;
 }
-	void movethelastelefirst(Node * head){
+	void 		movethelastelefirst(Node * head){
 		Node * cur = head, *store= head, *temp=NULL;
 		while(cur!=NULL){
 			if(cur->next && cur->next->next==NULL){
@@ -271,7 +327,7 @@ public:
 		this->LinkedListHead= temp;
 
 	}
-	Node* addOne(Node* head){
+	Node        *addOne(Node* head){
         head =ReverseIterative(head);
 		Node * cur= head, *store =NULL;
 		short int onhand= 1;
@@ -295,7 +351,7 @@ public:
 		return head;
 
 	}
-	void printMiddle(Node *head){
+	void 		printMiddle(Node *head){
 		//Delete middle is also easy
         Node *slow_ptr = head;
         Node *fast_ptr = head;
@@ -313,7 +369,7 @@ public:
 			//store->next= slow_ptr->next;//To delete the middle element 
         }
     }
-	void swapNodes(int x, int y)
+	void 		swapNodes(int x, int y)
 {/* Function to swap nodes x and y in linked list by
 changing links */
     // Nothing to do if x and y are same
@@ -355,8 +411,7 @@ changing links */
     currY->next = currX->next;
     currX->next = temp;
 }
-//Function to check whether the list is palindrome.
-    bool isPalindrome(Node *head)
+    bool 		isPalindrome(Node *head)
     {
         Node* temp = head;
         string str1, str2;
@@ -533,22 +588,110 @@ void splitCircularList(Node *head, Node **head1_ref, Node **head2_ref)
         
         return false;
     }
+
+Merge Sort Another Code:
+class Solution{
+
+ Node* findMid(Node* head)
+ {
+     Node* slow = head;
+     Node* fast = head->next;
+     
+     while(fast!= NULL && fast->next!=NULL)
+     {
+         fast = fast->next->next;
+         slow = slow->next;
+     }
+     return slow;
+ }
+ 
+ Node* merge(Node* left , Node* right)
+ {
+     if(left == NULL)
+     {
+         return right;
+     }
+     
+     if(right == NULL)
+     {
+         return left;
+     }
+     
+     Node* ansHead = new Node(-1);
+     Node* temp = ansHead;
+     
+     while(left != NULL && right != NULL)
+     {
+         if(left->data < right->data)
+         {
+             temp->next = left;
+             temp = left;
+             left = left->next;
+         }
+         else
+         {
+             temp->next = right;
+             temp = right;
+             right = right->next;
+         }
+     }
+     
+     while(left != NULL)
+     {
+         temp->next = left;
+         temp = left;
+         left = left->next;
+     }
+     while(right != NULL)
+     {
+         temp->next = right;
+         temp = right;
+         right = right->next;
+     }
+     
+     ansHead = ansHead->next;
+     return ansHead;
+ }
+ 
+ public:
+   //Function to sort the given linked list using Merge Sort.
+   Node* mergeSort(Node* head) {
+       if(head==NULL || head->next == NULL)
+       {
+           return head;
+       }
+       
+       Node* mid = findMid(head);
+       Node* left = head;
+       Node* right = mid->next;
+       mid->next = NULL;
+       
+       
+       left = mergeSort(left);
+       right = mergeSort(right);
+       
+       Node* result = merge(left , right);
+       
+       return result;
+   }
+};
 */
 int main()
 {
 	LinkedList l;
-	l.InsertNode(1, 0);
-	l.InsertNode(2, 1);
-	l.InsertNode(4, 2);
-	l.InsertNode(4, 3);
-	l.InsertNode(9, 4);
-	l.InsertNode(9, 5);
+	l.InsertNode(11, 0);
+	l.InsertNode(2121, 1);
+	l.InsertNode(234, 2);
+	l.InsertNode(124, 3);
+	l.InsertNode(29, 4);
+	l.InsertNode(921, 5);
 	l.InsertNode(29, 6);
-	l.InsertNode(92, 7);
+	l.InsertNode(922, 7);
 	l.InsertNode(29, 8);
 	l.PrintList();
+	l.sort();
+	l.PrintList();
 	
-
 	
 	return 0;
 }
