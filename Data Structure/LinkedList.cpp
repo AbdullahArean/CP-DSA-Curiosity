@@ -46,7 +46,6 @@ private:
 		}
 		return prev;
 	}
-
 public:
 	LinkedList()
 	{
@@ -140,7 +139,8 @@ public:
 		this->LengthOfLinkedList--;
 		return;
 	}
-	Node *ReturnLinkedListHead() { return LinkedListHead; }
+	Node *ReturnLinkedListHead() 
+	{ return LinkedListHead; }
 	void ReverseIterative()
 	{
 		this->LinkedListHead = ReverseIterative(this->LinkedListHead);
@@ -186,10 +186,7 @@ public:
 
 		return head;
 	}
-};
-
-
-Node *Reversevariation(Node *current, int k)
+	Node *Reversevariation(Node *current, int k)
 {
 	int count = k;
 	Node *prev = NULL, *next = NULL, *temp2 = current, *temp1 = NULL, *tempfinal = NULL;
@@ -214,6 +211,49 @@ Node *Reversevariation(Node *current, int k)
 	}
 	return tempfinal;
 }
+	Node *deleteDuplicates(Node *head)
+{
+//Link:https:// leetcode.com/problems/remove-duplicates-from-sorted-list-ii/
+//Link: https://caring-august-d6b.notion.site/Remove-Duplicates-in-Linked-List-18cbb228467842d08e53867c6ed595da
+	
+	if (head == NULL)
+		return NULL;
+	if (head->next == NULL)
+		return head;
+
+	Node *temp = head;
+	map<int, int> map;
+
+	while (temp != NULL)
+	{
+		map[temp->data]++;
+		temp = temp->next;
+	}
+
+	Node *NewHead = new Node(0);
+	temp = NewHead;
+
+	for (auto x : map)
+	{
+		if (x.second == 1)
+		{
+			temp->next = new Node(x.first);
+			temp = temp->next;
+		}
+	}
+
+	return NewHead->next;
+}
+	bool detectLoop(Node * head){
+	Node * slow_p= head, *fast_p = head;
+	while(slow_p && fast_p && fast_p->next){
+		slow_p=slow_p->next;
+		fast_p= fast_p->next->next;
+		if(slow_p==fast_p) return 1;
+	}
+	return 0;
+}
+};
 /*
 Loop 	Related Problem
 Links: https://www.geeksforgeeks.org/detect-loop-in-a-linked-list/
@@ -305,91 +345,6 @@ Node *removeDuplicates(Node *head)
 	return head;
 }
 */
-void removeDuplicates(struct Node *head)
-{
-	Node *temp = head, *tempstore1 = NULL;
-	while (temp != NULL)
-	{
-		if (tempstore1 != NULL && tempstore1->data != temp->data)
-		{
-			tempstore1->next = temp;
-			tempstore1 = temp;
-		}
-		if (!tempstore1)
-			tempstore1 = temp;
-		temp = temp->next;
-	}
-}
-Node *deleteDuplicates(Node *head)
-{
-//Link:https:// leetcode.com/problems/remove-duplicates-from-sorted-list-ii/
-
-	if (head == NULL)
-		return NULL;
-	if (head->next == NULL)
-		return head;
-
-	Node *temp = head;
-	map<int, int> map;
-
-	while (temp != NULL)
-	{
-		map[temp->data]++;
-		temp = temp->next;
-	}
-
-	Node *NewHead = new Node(0);
-	temp = NewHead;
-
-	for (auto x : map)
-	{
-		if (x.second == 1)
-		{
-			temp->next = new Node(x.first);
-			temp = temp->next;
-		}
-	}
-
-	return NewHead->next;
-}
-Node *deleteDuplicates2(Node *head)
-{
-//Link:https: // leetcode.com/problems/remove-duplicates-from-sorted-list-ii/
-Node *cur= head, *prev= NULL, *next= NULL;
-while(cur!=NULL){
-	next= cur->next;
-	if(prev==NULL && ){
-
-
-	}
-	else if(next!=NULL && cur->data!=prev->data && cur->data!=next->data){
-
-	}
-}
-}
-Node *removeDuplicates2(Node *head)
-{
-	//Link: https://caring-august-d6b.notion.site/Remove-Duplicates-in-Linked-List-18cbb228467842d08e53867c6ed595da
-	vector<bool> v(100000, false);
-	Node *temp = head, *tempstore = NULL;
-	while (temp != NULL)
-	{
-		if (!v[temp->data])
-		{
-			if (tempstore != NULL)
-				tempstore->next = temp;
-			v[temp->data] = true;
-			tempstore = temp;
-		}
-		else
-		{
-			tempstore->next = NULL;
-		}
-		temp = temp->next;
-	}
-
-	return head;
-}
 
 int main()
 {
