@@ -102,6 +102,181 @@ private:
 	*source = mergeLists(a,b);
 
 }
+	bool 	detectLoop(Node * head){
+	Node * slow_p= head, *fast_p = head;
+	while(slow_p && fast_p && fast_p->next){
+		slow_p=slow_p->next;
+		fast_p= fast_p->next->next;
+		if(slow_p==fast_p) return 1;
+	}
+	return 0;
+}
+	bool 	isPalindrome(Node *head)
+    {
+        Node* temp = head;
+        string str1, str2;
+        while(temp)
+        {
+            str1 = str1 + to_string(temp->data);
+            str2 = to_string(temp->data) + str2;
+            temp = temp->next;
+        }
+        
+        if(str1 == str2)
+        return true;
+        
+        return false;
+    }
+	void 	printMiddle(Node *head){
+		//Delete middle is also easy
+        Node *slow_ptr = head;
+        Node *fast_ptr = head;
+		//Node * store = NULL; //To delete the middle element 
+  
+        if (head!=NULL)
+        {
+            while (fast_ptr && fast_ptr->next)
+            {
+                fast_ptr = fast_ptr->next->next;
+                slow_ptr = slow_ptr->next;
+				//if(fast_ptr->next) store = slow_ptr; //To delete the middle element 
+            }
+            cout << "The middle element is [" << slow_ptr->data << "]" << endl;
+			//store->next= slow_ptr->next;//To delete the middle element 
+        }
+    }
+	void    removeDuplicates(struct Node *head)
+	{
+		Node *temp = head, *tempstore1 = NULL;
+		while (temp != NULL)
+		{
+			if (tempstore1 != NULL && tempstore1->data != temp->data)
+			{
+				tempstore1->next = temp;
+				tempstore1 = temp;
+			}
+			if (!tempstore1)
+				tempstore1 = temp;
+			temp = temp->next;
+		}
+	}
+	Node 	*removeDuplicates2(Node *head)
+	{ //Unsorted
+		vector<bool> v(100000, false);
+		Node *temp = head, *tempstore = NULL;
+		while (temp != NULL)
+		{
+			if (!v[temp->data])
+			{
+				if (tempstore != NULL)
+					tempstore->next = temp;
+				v[temp->data] = true;
+				tempstore = temp;
+			}
+			else
+			{
+				tempstore->next = NULL;
+			}
+			temp = temp->next;
+		}
+
+		return head;
+	}
+	Node 	*Reversevariation(Node *current, int k)
+{
+	int count = k;
+	Node *prev = NULL, *next = NULL, *temp2 = current, *temp1 = NULL, *tempfinal = NULL;
+	while (current != NULL)
+	{
+		count = k;
+		prev = NULL, next = NULL, temp2 = current;
+		while (current != NULL && count--)
+		{
+			next = current->next;
+			current->next = prev;
+			prev = current;
+			current = next;
+		}
+		if (temp1 == NULL)
+			tempfinal = prev;
+		if (temp1 != NULL)
+		{
+			temp1->next = prev;
+		}
+		temp1 = temp2;
+	}
+	return tempfinal;
+}
+	Node 	*deleteDuplicates(Node *head)
+{
+//Link:https:// leetcode.com/problems/remove-duplicates-from-sorted-list-ii/
+//Link: https://caring-august-d6b.notion.site/Remove-Duplicates-in-Linked-List-18cbb228467842d08e53867c6ed595da
+	
+	if (head == NULL)
+		return NULL;
+	if (head->next == NULL)
+		return head;
+
+	Node *temp = head;
+	map<int, int> map;
+
+	while (temp != NULL)
+	{
+		map[temp->data]++;
+		temp = temp->next;
+	}
+
+	Node *NewHead = new Node(0);
+	temp = NewHead;
+
+	for (auto x : map)
+	{
+		if (x.second == 1)
+		{
+			temp->next = new Node(x.first);
+			temp = temp->next;
+		}
+	}
+
+	return NewHead->next;
+}
+	void 	movethelastelefirst(Node * head){
+		Node * cur = head, *store= head, *temp=NULL;
+		while(cur!=NULL){
+			if(cur->next && cur->next->next==NULL){
+				temp = cur->next;
+				temp->next = store;
+				cur->next = NULL;
+			 }
+			cur=cur->next;
+		}
+		this->LinkedListHead= temp;
+
+	}
+	Node    *addOne(Node* head){
+        head =ReverseIterative(head);
+		Node * cur= head, *store =NULL;
+		short int onhand= 1;
+		while(cur!=NULL && onhand) {
+
+			if(cur->next==NULL) store =cur;
+			if(cur->data<9) {
+				cur->data++;
+				onhand = 0;
+
+			}
+			else if(cur->data==9) {
+				cur->data=0;
+				onhand = 1;
+			}
+
+			cur= cur->next;
+		}
+		if(onhand) store->next = new Node(onhand);
+		head =ReverseIterative(head);
+		return head;
+
+	}
 public:
 				LinkedList()
 	{
@@ -111,6 +286,14 @@ public:
 				LinkedList(Node *head)
 	{
 		this->LinkedListHead = head;
+		Node *current = head;
+		int count =0;
+		while(current!=NULL)
+		{
+			count++;
+			current = current->next;
+		}
+		this->LengthOfLinkedList = count;
 	}
 	int 		Length()
 	{
@@ -199,177 +382,30 @@ public:
 }   
 	Node 		*ReturnLinkedListHead() 
 	{ return LinkedListHead; }
-	void 		ReverseIterative()
+	void 		Sort()
+	{
+	mergeSort(&this->LinkedListHead);
+	}
+	void 		Reverse()
 	{
 		this->LinkedListHead = ReverseIterative(this->LinkedListHead);
+		//this->LinkedListHead = ReverseRecursion(this->LinkedListHead);
+
 	}
-	void 		ReverseRecursion()
+	bool 		IsLoopExist()
 	{
-		this->LinkedListHead = ReverseRecursion(this->LinkedListHead);
+		return detectLoop(this->LinkedListHead);
 	}
-	void 		removeDuplicates(struct Node *head)
+	bool 		IsPalindrome()
 	{
-		Node *temp = head, *tempstore1 = NULL;
-		while (temp != NULL)
-		{
-			if (tempstore1 != NULL && tempstore1->data != temp->data)
-			{
-				tempstore1->next = temp;
-				tempstore1 = temp;
-			}
-			if (!tempstore1)
-				tempstore1 = temp;
-			temp = temp->next;
-		}
+		return isPalindrome(this->LinkedListHead);
 	}
-	Node 		*removeDuplicates2(Node *head)
-	{ //Unsorted
-		vector<bool> v(100000, false);
-		Node *temp = head, *tempstore = NULL;
-		while (temp != NULL)
-		{
-			if (!v[temp->data])
-			{
-				if (tempstore != NULL)
-					tempstore->next = temp;
-				v[temp->data] = true;
-				tempstore = temp;
-			}
-			else
-			{
-				tempstore->next = NULL;
-			}
-			temp = temp->next;
-		}
-
-		return head;
-	}
-	Node 		*Reversevariation(Node *current, int k)
-{
-	int count = k;
-	Node *prev = NULL, *next = NULL, *temp2 = current, *temp1 = NULL, *tempfinal = NULL;
-	while (current != NULL)
+	void 		PrintMiddle()
 	{
-		count = k;
-		prev = NULL, next = NULL, temp2 = current;
-		while (current != NULL && count--)
-		{
-			next = current->next;
-			current->next = prev;
-			prev = current;
-			current = next;
-		}
-		if (temp1 == NULL)
-			tempfinal = prev;
-		if (temp1 != NULL)
-		{
-			temp1->next = prev;
-		}
-		temp1 = temp2;
-	}
-	return tempfinal;
-}
-	Node 		*deleteDuplicates(Node *head)
-{
-//Link:https:// leetcode.com/problems/remove-duplicates-from-sorted-list-ii/
-//Link: https://caring-august-d6b.notion.site/Remove-Duplicates-in-Linked-List-18cbb228467842d08e53867c6ed595da
-	
-	if (head == NULL)
-		return NULL;
-	if (head->next == NULL)
-		return head;
-
-	Node *temp = head;
-	map<int, int> map;
-
-	while (temp != NULL)
-	{
-		map[temp->data]++;
-		temp = temp->next;
-	}
-
-	Node *NewHead = new Node(0);
-	temp = NewHead;
-
-	for (auto x : map)
-	{
-		if (x.second == 1)
-		{
-			temp->next = new Node(x.first);
-			temp = temp->next;
-		}
-	}
-
-	return NewHead->next;
-}
-	void 		sort(){
-	mergeSort(&this->LinkedListHead);
-}
-	bool 		detectLoop(Node * head){
-	Node * slow_p= head, *fast_p = head;
-	while(slow_p && fast_p && fast_p->next){
-		slow_p=slow_p->next;
-		fast_p= fast_p->next->next;
-		if(slow_p==fast_p) return 1;
-	}
-	return 0;
-}
-	void 		movethelastelefirst(Node * head){
-		Node * cur = head, *store= head, *temp=NULL;
-		while(cur!=NULL){
-			if(cur->next && cur->next->next==NULL){
-				temp = cur->next;
-				temp->next = store;
-				cur->next = NULL;
-			 }
-			cur=cur->next;
-		}
-		this->LinkedListHead= temp;
+		printMiddle(this->LinkedListHead);
 
 	}
-	Node        *addOne(Node* head){
-        head =ReverseIterative(head);
-		Node * cur= head, *store =NULL;
-		short int onhand= 1;
-		while(cur!=NULL && onhand) {
-
-			if(cur->next==NULL) store =cur;
-			if(cur->data<9) {
-				cur->data++;
-				onhand = 0;
-
-			}
-			else if(cur->data==9) {
-				cur->data=0;
-				onhand = 1;
-			}
-
-			cur= cur->next;
-		}
-		if(onhand) store->next = new Node(onhand);
-		head =ReverseIterative(head);
-		return head;
-
-	}
-	void 		printMiddle(Node *head){
-		//Delete middle is also easy
-        Node *slow_ptr = head;
-        Node *fast_ptr = head;
-		//Node * store = NULL; //To delete the middle element 
-  
-        if (head!=NULL)
-        {
-            while (fast_ptr && fast_ptr->next)
-            {
-                fast_ptr = fast_ptr->next->next;
-                slow_ptr = slow_ptr->next;
-				//if(fast_ptr->next) store = slow_ptr; //To delete the middle element 
-            }
-            cout << "The middle element is [" << slow_ptr->data << "]" << endl;
-			//store->next= slow_ptr->next;//To delete the middle element 
-        }
-    }
-	void 		swapNodes(int x, int y)
+	void 		SwapNodes(int x, int y)
 {/* Function to swap nodes x and y in linked list by
 changing links */
     // Nothing to do if x and y are same
@@ -411,22 +447,7 @@ changing links */
     currY->next = currX->next;
     currX->next = temp;
 }
-    bool 		isPalindrome(Node *head)
-    {
-        Node* temp = head;
-        string str1, str2;
-        while(temp)
-        {
-            str1 = str1 + to_string(temp->data);
-            str2 = to_string(temp->data) + str2;
-            temp = temp->next;
-        }
-        
-        if(str1 == str2)
-        return true;
-        
-        return false;
-    }
+    
 };
 /*
 Loop 	Related Problem
@@ -679,19 +700,16 @@ class Solution{
 int main()
 {
 	LinkedList l;
-	l.InsertNode(11, 0);
-	l.InsertNode(2121, 1);
-	l.InsertNode(234, 2);
-	l.InsertNode(124, 3);
-	l.InsertNode(29, 4);
-	l.InsertNode(921, 5);
-	l.InsertNode(29, 6);
-	l.InsertNode(922, 7);
-	l.InsertNode(29, 8);
+	l.InsertNode(1, 0);
+	l.InsertNode(2, 1);
+	l.InsertNode(2, 2);
+	l.InsertNode(2, 3);
+	l.InsertNode(2, 4);
+	l.InsertNode(2, 5);
+	l.InsertNode(2, 6);
+	l.InsertNode(2, 7);
+	l.InsertNode(1, 8);
 	l.PrintList();
-	l.sort();
-	l.PrintList();
-	
-	
+	cout<<l.IsPalindrome()<<endl;
 	return 0;
 }
