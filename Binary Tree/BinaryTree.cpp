@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 const int MAXN = 1e5;
-int max(int inorder[], int strt, int end);
 class Node
 {
 public:
@@ -162,42 +161,18 @@ public:
         return binary_tree;
     }
 };
-//  void    Insert              (Node **bbinary_tree, int value) 
-//     {
-//         if(!(bbinary_tree)) 
-//         {
-//             *bbinary_tree = new Node(value);
-//             return;
-//         }
-//         if(value < (*bbinary_tree)->data) 
-//             Insert(&(*bbinary_tree)->left_child, value);
-//         else if(value > (*bbinary_tree)->data) 
-//             Insert(&(*bbinary_tree)->right_child, value);
-
-//     }
-//Binary Search Tree Insert and search function not working
 int main()
 {
-    // int n, in[MAXN], pre[MAXN];
-    // cin >> n;
-    // for (int i = 0; i < n; i++)
-    //     scanf("%d", &pre[i]);
-    // for (int j = 0; j < n; j++)
-    //     scanf("%d", &in[j]);
-    // BinaryTree t1;
-    // t1.BuildTree(in, pre, 0, n - 1);
-    // t1.print_postorder(t1.Returntreehead());
-    // printf("\n");
-    // t1.print_levelorder(t1.Returntreehead());
-    // printf("\n");
-    // cout<<t1.numberofNodes(t1.Returntreehead())<<endl;
-    // cout<<t1.numberofnonleafs(t1.Returntreehead())<<endl;
-    // cout<<t1.numberofleafs(t1.Returntreehead())<<endl;
-    // cout<<t1.numberoffullNode(t1.Returntreehead())<<endl;
-    
-    // t1.Insert(t1.Returntreehead(),12);
-    // Node *root_node = NULL;
-    // Insert(&root_node, 10);
-    // BinaryTree t1 = BinaryTree(root_node);
+    int n, in[MAXN],pre[MAXN];
+    cin>>n;
+    for(int i=0; i<n; i++) scanf("%d",&pre[i]);
+    for(int j=0; j<n; j++) scanf("%d",&in[j]);
+	int len = n;
 
+    BinaryTree t1 = BinaryTree();
+	t1.BuildTree(in, pre, 0, len - 1);
+    t1.print_postorder(t1.Returntreehead());
+    printf("\n");
+    t1.print_levelorder(t1.Returntreehead());
+    printf("\n");
 }
