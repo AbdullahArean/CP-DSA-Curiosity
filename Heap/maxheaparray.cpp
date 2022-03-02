@@ -150,19 +150,19 @@ int main(int argc, char const *argv[]){
 	my_elements = {7,34,31,49};
 
 	make_heap(my_heap,my_elements);
-	print_heap(my_heap);
+	//print_heap(my_heap);
 	// printf("%d\n",get_maximum(my_heap));
 	// remove_maximum(my_heap);
 	for(int i=0; i<4; i++) {
 		//print_heap(my_heap);
 		my_elements.push_back(get_maximum(my_heap));
-		remove_maximum(my_heap);
+		cout<<remove_maximum(my_heap)<<endl;
 		
 	}
-	for(int i=0; i<4; i++) {
-		//print_heap(my_heap);
-		printf("%d\n", my_elements[i]);
-	}
+	// for(int i=0; i<4; i++) {
+	// 	//print_heap(my_heap);
+	// 	printf("%d\n", my_elements[i]);
+	// }
 
 	
 	//print_heap(my_heap);

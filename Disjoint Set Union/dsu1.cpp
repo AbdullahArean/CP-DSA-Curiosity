@@ -25,7 +25,7 @@ int findset(int v)
     */
     if (v == parent[v])
         return v;
-    return findset(parent[v]); // Without Path Compression
+    //return findset(parent[v]); // Without Path Compression
     return parent[v] = findset(parent[v]);
     /*
     ****make the paths for all those nodes shorter, by setting the parent of each visited vertex directly to p.

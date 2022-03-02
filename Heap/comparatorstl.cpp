@@ -3,41 +3,47 @@
 using namespace std;
 class Student{
     public:
-    int age;
+    int id;
     string name;
+    double cgpa;
 
-    Student(int age, string name){
-        this->age= age;
+    Student(string name, double cgpa, int id){
         this->name = name;
+        this->id= id;
+        this->cgpa= cgpa;
+        
     }
-    // bool operator< (const Student otherStudent) const{
-    //     return age> otherStudent.age;
-    // }
 
 };
 struct comparator
 {
     bool operator()(Student a, Student b){
-        return a.age<b.age;
+        if(a.cgpa==b.cgpa) 
+        {
+            if(a.name== b.name){
+                return a.id<b.id;
+
+            }
+            else if(a.name>b.name) return 0;
+            else return 1;
+        }
+        else if(a.cgpa>b.cgpa)return 0;
+        else return 1;
     }
 };
 
 int main()
 {
     priority_queue<Student, vector<Student>, comparator> pq;
-    //priority_queue<Student>pq;
-    pq.push(Student(12, "asrean"));
-
-    pq.push(Student(12, "sfsdarean"));
-
-    pq.push(Student(1332, "sdsfarean"));
-
-    pq.push(Student(13332, "areafsn"));
-
-    pq.push(Student(1332, "afsrsdfeansf"));
-    while(!pq.empty()){
-        cout<<pq.top().name<<" "<<pq.top().age<<endl;
-        pq.pop();
+    int n, k;
+    cin>>n;
+    while(n--){
+        string s; double cgpa; int id;
+        cin>>s>>cgpa>>id;
+        pq.push(Student(s, cgpa, id));
     }
+    cout<<pq.top().name<<endl;
+    pq.pop();
+    cout<<pq.top().name<<endl;
     return 0;
 }
