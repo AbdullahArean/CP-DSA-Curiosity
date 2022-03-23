@@ -12,10 +12,13 @@ class Graph
     int distance[MAXN]; // distance from the source
     int visited[MAXN];  // 0=>never visited 1=>visiting 2=>done visited
     int previos[MAXN];  // Stores the immediate parent/previous y
-
+    
+    //int indeg[MAXN]; //indegree
+    
     // for dfs
     int discoverytime[MAXN];
     int finishtime[MAXN];
+
     ll time;
 
 public:
@@ -27,7 +30,16 @@ public:
     {
         adjlist[sourcenode].push_back(destinationnode);
         // adjlist[destinationnode].push_back(sourcenode); // comment it out if it is a directed graph
+        //indeg[sourcenode]++; //toplogical sort
     }
+    /*
+    void setindegree(){
+        for (int i = 1; i <=numOfVertex; i++)
+        {
+            indeg[i]=0;
+        }
+    }
+    */
     bool detect_cycle_one_vertex(int currentnode, bool visited[], int parentnode)
     {
         visited[currentnode] = true;
@@ -316,10 +328,12 @@ public:
     //         }
     //     }
     // }
+    
 };
 
 int main()
 {
+    
     int n_nodes, n_edges, u, v;
     cin >> n_nodes;
     cin >> n_edges;
@@ -329,6 +343,6 @@ int main()
         cin >> u >> v;
         graph1.add_new_edge(u, v);
     }
-
+    graph1.bfs(1);
     return 0;
 }
