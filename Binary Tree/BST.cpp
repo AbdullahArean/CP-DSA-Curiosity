@@ -252,6 +252,39 @@ public:
         return findMin(this->Binary_Tree_Root);
 
     }
+    int     heightoftree              (Node *bbinary_tree)
+    {
+        int depth = 0;
+
+        queue<Node *> q;
+        q.push(bbinary_tree);
+        q.push(NULL);
+        while (!q.empty())
+        {
+            Node *temp = q.front();
+            q.pop();
+            if (temp == NULL)
+            {
+                depth++;
+            }
+            if (temp != NULL)
+            {
+                if (temp->left_child)
+                {
+                    q.push(temp->left_child);
+                }
+                if (temp->right_child)
+                {
+                    q.push(temp->right_child);
+                }
+            }
+            else if (!q.empty())
+            {
+                q.push(NULL);
+            }
+        }
+        return depth;
+    }
 };
 
 int main() {
@@ -268,6 +301,6 @@ int main() {
     Current_Tree_Node.display();
     Current_Tree_Node.remove(30);
     Current_Tree_Node.display();
-    cout<<Current_Tree_Node.FindMaximumElement()->data<<endl;
+    cout<<Current_Tree_Node.heightoftree(Current_Tree_Node.Returntreehead())<<endl;
     return 0; 
 }

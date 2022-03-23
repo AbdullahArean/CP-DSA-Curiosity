@@ -65,7 +65,7 @@ public:
         int depth = 0;
 
         queue<Node *> q;
-        q.push(binary_tree);
+        q.push(bbinary_tree);
         q.push(NULL);
         while (!q.empty())
         {
