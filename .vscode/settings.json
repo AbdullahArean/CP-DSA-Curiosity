@@ -4,6 +4,7 @@
         "regex": "cpp",
         "span": "cpp",
         "utility": "cpp",
-        "type_traits": "cpp"
+        "type_traits": "cpp",
+        "iostream": "cpp"
     }
 }

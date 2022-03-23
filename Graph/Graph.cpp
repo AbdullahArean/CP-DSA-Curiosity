@@ -214,10 +214,10 @@ public:
         path_index--;
         visited[u] = false;
     }
-    bool isBt(int x)
+    void isBt(int x)
     {
         visited[x] = 1;
-        distance[x]=5;
+        distance[x]=0;
 
         queue<int> container_queue;
 
@@ -232,33 +232,30 @@ public:
             vector<int>::iterator it;
             for (it = adjlist[y].begin(); it != adjlist[y].end(); it++)
             {
-                if (visited[*it]==0)
+                if (visited[*it]==-1)
                 {
 
                     visited[*it] = 1;
-                    distance[*it]=6;
-                    printf("%d  %d\n",*it,distance[*it]);
+                    distance[*it]= !distance[y];
                     container_queue.push(*it);
                 }
-                else if (visited[*it] == 1 && distance[*it]==distance[y])
-                {
-                    return false;
-                }
+
                     
             }
         }
-        return true;
     }
     bool isBipartite()
     {
-        for (int i = 0; i < numOfVertex; ++i)
+        for (int i = 1; i <= numOfVertex; ++i)
             {visited[i] = -1;
             distance[i]=-1;}
-        for (int i = 0; i < numOfVertex; i++)
-            if (visited[i] == -1)
-                if (isBt(i) == false)
-                    return false;
+        for (int i = 1; i <= numOfVertex; i++) if (visited[i] == -1) isBt(i);
 
+        for(int i=1;i<=numOfVertex;i++){
+            for(auto it: adjlist[i]){
+                if(distance[i]==distance[it]) return false;
+            }
+        }
         return true;
     }
 };
