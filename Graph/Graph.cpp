@@ -26,7 +26,7 @@ public:
     void add_new_edge(int sourcenode, int destinationnode)
     {
         adjlist[sourcenode].push_back(destinationnode);
-       // adjlist[destinationnode].push_back(sourcenode); // comment it out if it is a directed graph
+        // adjlist[destinationnode].push_back(sourcenode); // comment it out if it is a directed graph
     }
     bool detect_cycle_one_vertex(int currentnode, bool visited[], int parentnode)
     {
@@ -217,7 +217,7 @@ public:
     void isBt(int x)
     {
         visited[x] = 1;
-        distance[x]=0;
+        distance[x] = 0;
 
         queue<int> container_queue;
 
@@ -232,32 +232,90 @@ public:
             vector<int>::iterator it;
             for (it = adjlist[y].begin(); it != adjlist[y].end(); it++)
             {
-                if (visited[*it]==-1)
+                if (visited[*it] == -1)
                 {
 
                     visited[*it] = 1;
-                    distance[*it]= !distance[y];
+                    distance[*it] = !distance[y];
                     container_queue.push(*it);
                 }
-
-                    
             }
         }
     }
     bool isBipartite()
     {
         for (int i = 1; i <= numOfVertex; ++i)
-            {visited[i] = -1;
-            distance[i]=-1;}
-        for (int i = 1; i <= numOfVertex; i++) if (visited[i] == -1) isBt(i);
+        {
+            visited[i] = -1;
+            distance[i] = -1;
+        }
+        for (int i = 1; i <= numOfVertex; i++)
+            if (visited[i] == -1)
+                isBt(i);
 
-        for(int i=1;i<=numOfVertex;i++){
-            for(auto it: adjlist[i]){
-                if(distance[i]==distance[it]) return false;
+        for (int i = 1; i <= numOfVertex; i++)
+        {
+            for (auto it : adjlist[i])
+            {
+                if (distance[i] == distance[it])
+                    return false;
             }
         }
         return true;
     }
+    // void DFSUtil(int v)
+    // {
+    //     visited[v] = 1;
+    //     cout << v << " ";
+    //     vector<int>::iterator i;
+    //     for (i = adjlist[v].begin(); i != adjlist[v].end(); ++i)
+    //         if (!visited[*i])
+    //             DFSUtil(*i);
+    // }
+    // Graph getTranspose()
+    // {
+    //     Graph g(numOfVertex);
+    //     for (int v = 1; v <= numOfVertex; v++)
+    //     {
+    //         vector<int>::iterator i;
+    //         for (i = adjlist[v].begin(); i != adjlist[v].end(); ++i)
+    //         {
+    //             g.adjlist[*i].push_back(v);
+    //         }
+    //     }
+    //     return g;
+    // }
+    // void fillOrder(int v, stack<int> &Stack)
+    // {
+    //     visited[v] = 1;
+    //     vector<int>::iterator i;
+    //     for (i = adjlist[v].begin(); i != adjlist[v].end(); ++i)
+    //         if (visited[*i] == 0)
+    //             fillOrder(*i, Stack);
+    //     Stack.push(v);
+    // }
+    // void printSCCs()
+    // {
+    //     stack<int> Stack;
+    //     for (int i = 1; i <= numOfVertex; i++)
+    //         visited[i] = 0;
+    //     for (int i = 1; i <= numOfVertex; i++)
+    //         if (visited[i] == 0)
+    //             fillOrder(i, Stack);
+    //     Graph gr = getTranspose();
+    //     for (int i = 1; i <= numOfVertex; i++)
+    //         visited[i] = 0;
+    //     while (Stack.empty() == false)
+    //     {
+    //         int v = Stack.top();
+    //         Stack.pop();
+    //         if (visited[v] == 0)
+    //         {
+    //             gr.DFSUtil(v);
+    //             cout << endl;
+    //         }
+    //     }
+    // }
 };
 
 int main()
@@ -271,7 +329,6 @@ int main()
         cin >> u >> v;
         graph1.add_new_edge(u, v);
     }
-    cout<<graph1.isBipartite()<<endl;
 
     return 0;
 }

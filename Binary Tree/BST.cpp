@@ -202,7 +202,23 @@ class BST {
         return numberoffullNode(bbinary_tree->left_child)+numberoffullNode(bbinary_tree->right_child)+ (bbinary_tree->left_child && bbinary_tree->right_child)?1:0;
        
     }
-    
+    int     heightfordiameter   (Node *bbinary_tree)
+{
+    if (bbinary_tree == NULL)
+        return 0;
+    return 1 + max(heightfordiameter (bbinary_tree->left_child), heightfordiameter (bbinary_tree->right_child));
+}
+    int     diameterofnode      (Node *bbinary_tree)
+{
+    if (bbinary_tree == NULL)
+        return 0;
+    int lheight = heightfordiameter (bbinary_tree->left_child);
+    int rheight = heightfordiameter (bbinary_tree->right_child);
+    int ldiameter = diameterofnode(bbinary_tree->left_child);
+    int rdiameter = diameterofnode(bbinary_tree->right_child);
+    return max(lheight + rheight + 1,
+            max(ldiameter, rdiameter));
+}
 public:
     BST() {
         Binary_Tree_Root = NULL;
@@ -285,6 +301,9 @@ public:
         }
         return depth;
     }
+    int diameter(){
+        return diameterofnode(this->Binary_Tree_Root);
+    }
 };
 
 int main() {
@@ -301,6 +320,6 @@ int main() {
     Current_Tree_Node.display();
     Current_Tree_Node.remove(30);
     Current_Tree_Node.display();
-    cout<<Current_Tree_Node.heightoftree(Current_Tree_Node.Returntreehead())<<endl;
+    cout<<Current_Tree_Node.diameter()<<endl;
     return 0; 
 }
