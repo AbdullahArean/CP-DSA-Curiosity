@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+#define ll long long int
 
 const int MAXN = 1e5, MOD = 1e9 + 7;
 class Graph
@@ -10,7 +11,12 @@ class Graph
     // for BFS
     int distance[MAXN]; // distance from the source
     int visited[MAXN];  // 0=>never visited 1=>visiting 2=>done visited
-    int previos[MAXN];  // Stores the immediate parent/previous node
+    int previos[MAXN];  // Stores the immediate parent/previous y
+
+    // for dfs
+    int discoverytime[MAXN];
+    int finishtime[MAXN];
+    ll time;
 
 public:
     Graph(int n_vertex)
@@ -20,7 +26,7 @@ public:
     void add_new_edge(int sourcenode, int destinationnode)
     {
         adjlist[sourcenode].push_back(destinationnode);
-        adjlist[destinationnode].push_back(sourcenode); // comment it out if it is a directed graph
+       // adjlist[destinationnode].push_back(sourcenode); // comment it out if it is a directed graph
     }
     bool detect_cycle_one_vertex(int currentnode, bool visited[], int parentnode)
     {
@@ -51,67 +57,209 @@ public:
                 return true;
         return false;
     }
-    // Detect Cycle in a Directed Graph using BFS and indegree
-    bool Graph::isCycle()
+    bool isCycle()
     {
-        // Create a vector to store indegrees of all
-        // vertices. Initialize all indegrees as 0.
         vector<int> in_degree(numOfVertex, 0);
-
-        // Traverse adjacency lists to fill indegrees of
-        // vertices. This step takes O(V+E) time
         for (int u = 0; u < numOfVertex; u++)
         {
             for (auto v : adjlist[u])
                 in_degree[v]++;
         }
-
-        // Create an queue and enqueue all vertices with
-        // indegree 0
-        queue<int> q;
+        queue<int> container_queue;
         for (int i = 0; i < numOfVertex; i++)
             if (in_degree[i] == 0)
-                q.push(i);
-
-        // Initialize count of visited vertices
-        // 1 For src Node
+                container_queue.push(i);
         int cnt = 1;
-
-        // Create a vector to store result (A topological
-        // ordering of the vertices)
         vector<int> top_order;
-
-        // One by one dequeue vertices from queue and enqueue
-        // adjacents if indegree of adjacent becomes 0
-        while (!q.empty())
+        while (!container_queue.empty())
         {
-
-            // Extract front of queue (or perform dequeue)
-            // and add it to topological order
-            int u = q.front();
-            q.pop();
+            int u = container_queue.front();
+            container_queue.pop();
             top_order.push_back(u);
-
-            // Iterate through all its neighbouring nodes
-            // of dequeued node u and decrease their in-degree
-            // by 1
             vector<int>::iterator itr;
             for (itr = adjlist[u].begin(); itr != adjlist[u].end(); itr++)
-
-                // If in-degree becomes zero, add it to queue
                 if (--in_degree[*itr] == 0)
                 {
-                    q.push(*itr);
-                    // while we are pushing elements to the queue we will incrementing the cnt
+                    container_queue.push(*itr);
                     cnt++;
                 }
         }
-
-        // Check if there was a cycle
         if (cnt != numOfVertex)
             return true;
         else
             return false;
+    }
+    void dfs()
+    {
+        for (int i = 1; i <= numOfVertex; i++)
+        {
+            visited[i] = 0;
+            previos[i] = -1;
+        }
+        time = 0;
+        int numberofconnectedcomponent = 0;
+        for (int i = 1; i <= numOfVertex; ++i)
+        {
+            if (visited[i] == 0)
+            {
+                numberofconnectedcomponent++;
+                cout << i << endl;
+                dfs_visit(i);
+            }
+        }
+        cout << numberofconnectedcomponent << endl;
+    }
+    void dfs_visit(int i)
+    {
+        time = time + 1;
+        discoverytime[i] = time;
+        visited[i] = 1;
+        vector<int>::iterator it;
+        for (it = adjlist[i].begin(); it != adjlist[i].end(); it++)
+        {
+            if (visited[*it] == 0)
+            {
+                previos[*it] = i;
+                dfs_visit(*it);
+            }
+            visited[i] = 2;
+            time = time + 1;
+            finishtime[i] = time;
+        }
+    }
+    void bfs(int x)
+    { // Here x is the root vertex
+        for (int i = 0; i < MAXN; i++)
+        {
+            visited[i] = 0; // 2 means black//1 means grey //0 means white
+            previos[i] = -1;
+            distance[i] = 0;
+        }
+        queue<int> container_queue;
+        container_queue.push(x);
+        visited[x] = 1;
+        previos[x] = 0;
+        distance[x] = 0;
+
+        while (!container_queue.empty())
+        {
+            int y = container_queue.front();
+            container_queue.pop();
+            cout << y << endl;
+            vector<int>::iterator it;
+            for (it = adjlist[y].begin(); it != adjlist[y].end(); it++)
+            {
+                if (!visited[*it])
+                {
+                    visited[*it] = 1;
+                    previos[*it] = y;
+                    distance[*it] = distance[y] + 1;
+                    container_queue.push(*it);
+                }
+                visited[y] = 2;
+            }
+        }
+    }
+    void printadjlist()
+    {
+        for (int i = 1; i < numOfVertex + 1; i++)
+        {
+            cout << i << " -> ";
+            for (int x : adjlist[i])
+            {
+                cout << x << " ";
+            }
+            cout << endl;
+        }
+    }
+    void printAllPaths(int s, int d)
+    {
+
+        // Create an array to store paths
+        int *path = new int[numOfVertex];
+        int path_index = 0; // Initialize path[] as empty
+
+        // Initialize all vertices as not visited
+        for (int i = 0; i < numOfVertex; i++)
+            visited[i] = 0;
+
+        // Call the recursive helper function to print all paths
+        printAllPathsUtil(s, d, path, path_index);
+    }
+    void printAllPathsUtil(int u, int d, int path[], int &path_index)
+    {
+        // Mark the current y and store it in path[]
+        visited[u] = 1;
+        path[path_index] = u;
+        path_index++;
+
+        // If current vertex is same as destination, then print
+        // current path[]
+        if (u == d)
+        {
+            for (int i = 0; i < path_index; i++)
+                cout << path[i] << " ";
+            cout << endl;
+        }
+        else // If current vertex is not destination
+        {
+            // Recur for all the vertices adjacent to current vertex
+            vector<int>::iterator i;
+            for (i = adjlist[u].begin(); i != adjlist[u].end(); ++i)
+                if (!visited[*i])
+                    printAllPathsUtil(*i, d, path, path_index);
+        }
+
+        // Remove current vertex from path[] and mark it as unvisited
+        path_index--;
+        visited[u] = false;
+    }
+    bool isBt(int x)
+    {
+        visited[x] = 1;
+        distance[x]=5;
+
+        queue<int> container_queue;
+
+        container_queue.push(x);
+
+        while (!container_queue.empty())
+        {
+            int y = container_queue.front();
+
+            container_queue.pop();
+
+            vector<int>::iterator it;
+            for (it = adjlist[y].begin(); it != adjlist[y].end(); it++)
+            {
+                if (visited[*it]==0)
+                {
+
+                    visited[*it] = 1;
+                    distance[*it]=6;
+                    printf("%d  %d\n",*it,distance[*it]);
+                    container_queue.push(*it);
+                }
+                else if (visited[*it] == 1 && distance[*it]==distance[y])
+                {
+                    return false;
+                }
+                    
+            }
+        }
+        return true;
+    }
+    bool isBipartite()
+    {
+        for (int i = 0; i < numOfVertex; ++i)
+            {visited[i] = -1;
+            distance[i]=-1;}
+        for (int i = 0; i < numOfVertex; i++)
+            if (visited[i] == -1)
+                if (isBt(i) == false)
+                    return false;
+
+        return true;
     }
 };
 
@@ -126,9 +274,7 @@ int main()
         cin >> u >> v;
         graph1.add_new_edge(u, v);
     }
-    if (graph1.detect_cycle_in_full_graph())
-        cout << "Yes" << endl;
-    else
-        cout << "No" << endl;
+    cout<<graph1.isBipartite()<<endl;
+
     return 0;
 }
