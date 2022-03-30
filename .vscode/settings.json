@@ -5,6 +5,7 @@
         "span": "cpp",
         "utility": "cpp",
         "type_traits": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "ostream": "cpp"
     }
 }

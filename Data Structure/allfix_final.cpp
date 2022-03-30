@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define DIV " "
+#define DIV ' '
 int check_priority(char ch)
 {
     if (ch == '^')
@@ -15,7 +15,7 @@ int check_priority(char ch)
         return -1;
 }
 
-void infToPost(string infix)
+string infToPost(string infix)
 {
     stack<char> stack1;
     string postfix;
@@ -62,7 +62,37 @@ void infToPost(string infix)
 
     postfix.pop_back();
 
-    cout << postfix << endl;
+    return postfix ;
+}
+void postfixtoeval(string pofx)
+{  
+    //cout<<pofx<<endl;
+    bool flag=0;                       /* Main Program */
+  char ch;
+  stack<double>s;
+  int i=0;
+  double op1,op2;
+  while( (ch=pofx[i++]) != '\0')
+  {
+    if(isdigit(ch)) s.push(ch-'0'); /* Push the operand */
+    else if(ch==DIV)
+      flag=0;
+    else
+    {        /* Operator,pop two  operands */
+      flag=0;        
+      op2= s.top(); s.pop();
+      op1= s.top(); s.pop();
+      switch(ch)
+      {
+        case '+':s.push(op1+op2);break;
+        case '-':s.push(op1-op2);break;
+        case '*':s.push(op1*op2);break;
+        case '/':s.push(op1/op2);break;
+        case '^':s.push(pow(op1,op2)); break;
+      }
+    }
+  }
+  printf("%0.4lf\n",s.top());
 }
 
 int main()
@@ -73,6 +103,7 @@ int main()
 
     string infix;
     cin >> infix;
-    infToPost(infix);
+    postfixtoeval( infToPost(infix));
+
     return 0;
 }
