@@ -3,6 +3,7 @@ using namespace std;
 #define ll long long int
 
 const int MAXN = 1e5, MOD = 1e9 + 7;
+// Edges starts from 0 to N-1
 class Graph
 {
     int numOfVertex;
@@ -12,34 +13,29 @@ class Graph
     int distance[MAXN]; // distance from the source
     int visited[MAXN];  // 0=>never visited 1=>visiting 2=>done visited
     int previos[MAXN];  // Stores the immediate parent/previous y
-    
-    //int indeg[MAXN]; //indegree
-    
+
     // for dfs
     int discoverytime[MAXN];
     int finishtime[MAXN];
+
+    // for topological sort
+    int indeg[MAXN];
 
     ll time;
 
 public:
     Graph(int n_vertex)
     {
+        memset(indeg, 0x00, MAXN);
         this->numOfVertex = n_vertex;
     }
     void add_new_edge(int sourcenode, int destinationnode)
     {
         adjlist[sourcenode].push_back(destinationnode);
+        indeg[destinationnode]++;
         // adjlist[destinationnode].push_back(sourcenode); // comment it out if it is a directed graph
-        //indeg[sourcenode]++; //toplogical sort
+        // indeg[sourcenode]++; //toplogical sort
     }
-    /*
-    void setindegree(){
-        for (int i = 1; i <=numOfVertex; i++)
-        {
-            indeg[i]=0;
-        }
-    }
-    */
     bool detect_cycle_one_vertex(int currentnode, bool visited[], int parentnode)
     {
         visited[currentnode] = true;
@@ -103,10 +99,12 @@ public:
     }
     void dfs()
     {
-        for (int i = 1; i <= numOfVertex; i++)
+        for (int i = 0; i < numOfVertex; i++)
         {
             visited[i] = 0;
             previos[i] = -1;
+            finishtime[i] = INT_MIN;
+            discoverytime[i] = INT_MIN;
         }
         time = 0;
         int numberofconnectedcomponent = 0;
@@ -144,20 +142,20 @@ public:
         for (int i = 0; i < MAXN; i++)
         {
             visited[i] = 0; // 2 means black//1 means grey //0 means white
-            previos[i] = -1;
-            distance[i] = 0;
+            previos[i] = INT_MIN;
+            distance[i] = INT_MIN;
         }
         queue<int> container_queue;
         container_queue.push(x);
         visited[x] = 1;
-        previos[x] = 0;
+        previos[x] = -1;
         distance[x] = 0;
 
         while (!container_queue.empty())
         {
             int y = container_queue.front();
             container_queue.pop();
-            cout << y << endl;
+            // cout << y << endl;
             vector<int>::iterator it;
             for (it = adjlist[y].begin(); it != adjlist[y].end(); it++)
             {
@@ -256,16 +254,16 @@ public:
     }
     bool isBipartite()
     {
-        for (int i = 1; i <= numOfVertex; ++i)
+        for (int i = 0; i < numOfVertex; ++i)
         {
             visited[i] = -1;
             distance[i] = -1;
         }
-        for (int i = 1; i <= numOfVertex; i++)
+        for (int i = 0; i < numOfVertex; i++)
             if (visited[i] == -1)
                 isBt(i);
 
-        for (int i = 1; i <= numOfVertex; i++)
+        for (int i = 0; i < numOfVertex; i++)
         {
             for (auto it : adjlist[i])
             {
@@ -275,11 +273,172 @@ public:
         }
         return true;
     }
+    void PrintShortestPathBFS(int source, int destination)
+    {
+        bfs(source);
+        if (distance[destination] == INT_MIN)
+            cout << "No Path Exists" << endl;
+        else
+        {
+            stack<int> ans;
+            int iterator = destination;
+            while (previos[iterator] != -1)
+            {
+                ans.push(iterator);
+                iterator = previos[iterator];
+            }
+            ans.push(iterator);
+            while (!ans.empty())
+            {
+                cout << ans.top() << " ";
+                ans.pop();
+            }
+            cout << endl;
+        }
+    }
+    void modifiedbfs(int x)
+    { // Here x is the root vertex
+        for (int i = 0; i < MAXN; i++)
+        {
+            visited[i] = 0; // 2 means black//1 means grey //0 means white
+            previos[i] = INT_MIN;
+            distance[i] = INT_MIN;
+        }
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> container_queue;
+        container_queue.push({0, x});
+        visited[x] = 1;
+        previos[x] = -1;
+        distance[x] = 0;
+
+        while (!container_queue.empty())
+        {
+            int node = container_queue.top().second;
+            int dis = container_queue.top().first;
+            container_queue.pop();
+            for (auto it = adjlist[node].begin(); it != adjlist[node].end(); it++)
+            {
+                if (!visited[*it])
+                {
+                    visited[*it] = 1;
+                    previos[*it] = node;
+                    distance[*it] = distance[node] + 1;
+                    container_queue.push({dis + 1, *it});
+                }
+                visited[node] = 2;
+            }
+        }
+    }
+    void printlexicographicallyshortestpath(int source, int destination)
+    {
+        modifiedbfs(source);
+        if (distance[destination] != INT_MIN)
+        {
+            stack<int> s1;
+            int v = destination;
+            s1.push(v);
+            while (previos[v] != -1)
+            {
+                s1.push(previos[v]);
+                v = previos[v];
+            }
+            while (!s1.empty())
+            {
+                cout << s1.top();
+                s1.pop();
+                if (!s1.empty())
+                    cout << " ";
+            }
+            cout << endl;
+        }
+        else
+        {
+            cout << "Not Reachable" << endl;
+        }
+    }
+    void topologicalsort()
+    {
+        queue<int> q;
+        int tempindeg[MAXN];
+        for (int i = 0; i < numOfVertex; i++)
+        {
+            if (indeg[i] == 0)
+                q.push(i);
+        }
+        for (int i = 0; i < numOfVertex; i++)
+        {
+            tempindeg[i] = indeg[i];
+        }
+        while (!q.empty())
+        {
+            int temp = q.front();
+            q.pop();
+            cout << temp << " ";
+            for (auto it : adjlist[temp])
+            {
+                tempindeg[it]--;
+                if (tempindeg[it] == 0)
+                    q.push(it);
+            }
+        }
+        cout << endl;
+    }
+    vector<vector<int>> toadjacencylist()
+    {
+        // Initialize a matrix
+        vector<vector<int>> matrix(numOfVertex, vector<int>(numOfVertex, 0));
+
+        for (int i = 0; i < numOfVertex; i++)
+        {
+            for (auto j : adjlist[i])
+                matrix[i][j] = 1;
+        }
+        return matrix;
+    }
+    void printadjmat()
+    {
+        vector<vector<int>> adjmat = toadjacencylist();
+        for (int i = 0; i < adjmat.size(); i++)
+        {
+            for (int j = 0; j < adjmat.size(); j++)
+            {
+                cout << adjmat[i][j] << " ";
+            }
+            cout << endl;
+        }
+    }
+    int countTriangle(vector<vector<int>> graph, bool isDirected)
+    {
+        int count_Triangle = 0;
+
+        // Consider every possible
+        // triplet of edges in graph
+        for (int i = 0; i < numOfVertex; i++)
+        {
+            for (int j = 0; j < numOfVertex; j++)
+            {
+                for (int k = 0; k < numOfVertex; k++)
+                {
+                    // Check the triplet if
+                    // it satisfies the condition
+                    if (graph[i][j] && graph[j][k] && graph[k][i])
+                        count_Triangle++;
+                }
+            }
+        }
+        // If graph is directed ,
+    // division is done by 3,
+    // else division by 6 is done
+    isDirected? count_Triangle /= 3 :
+                count_Triangle /= 6;
+ 
+    return count_Triangle;
+    }
 };
 
 int main()
 {
-    
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
     int n_nodes, n_edges, u, v;
     cin >> n_nodes;
     cin >> n_edges;
@@ -289,6 +448,11 @@ int main()
         cin >> u >> v;
         graph1.add_new_edge(u, v);
     }
-    graph1.bfs(1);
+    graph1.printlexicographicallyshortestpath(1, 3);
+    graph1.PrintShortestPathBFS(1, 3);
+    graph1.topologicalsort();
+    graph1.printadjmat();
+    cout << graph1.countTriangle(graph1.toadjacencylist(), 1);
+
     return 0;
 }
