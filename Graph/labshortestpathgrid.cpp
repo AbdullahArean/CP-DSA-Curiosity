@@ -4,21 +4,28 @@ using namespace std;
 #define ll long long int
 #define ull unsigned long long int
 
-#define WHITE 0
-#define GREY 1
-#define BLACK 2
+#define WHITE 0 //Not visited
+#define GREY 1 //Started visiting
+#define BLACK 2 //Finished visiting
 
 
-int depth[1005][1005];
-int color[1005][1005];
-char grid[1005][1005];
+int depth[1005][1005]; //Keep track of the distance
+int color[1005][1005]; //Keep track of the color
+char grid[1005][1005]; //The given grid 
+
+//Important Concept : In grid we can move to four sides, there dx[i], dy[i] easily
+//keep track of where to go next
 int dx[4] = {0,0,-1,1};
 int dy[4] = {-1,1,0,0};
 
 int BFS(int n,int m,int sx, int sy, int desx, int desy){
-    queue<int>q;
-    int i,vx,vy,ux,uy;
-    while(!q.empty()) q.pop();
+    //We will apply simple BFS on Grid
+    queue<int>q; //A queue to keep track which box visited or not
+
+    int vx,vy,ux,uy; //u is the current working box and v is any adjacent box of u
+    
+    while(!q.empty()) q.pop(); //Making the queue empty
+
     q.push(sx);
     q.push(sy);
 
@@ -32,7 +39,7 @@ int BFS(int n,int m,int sx, int sy, int desx, int desy){
         uy = q.front();
         q.pop();
 
-        for(i=0; i<4; i++)
+        for(int i=0; i<4; i++)
         {
             vx = ux + dx[i];
             vy = uy + dy[i];

@@ -275,60 +275,6 @@ public:
         }
         return true;
     }
-    // void DFSUtil(int v)
-    // {
-    //     visited[v] = 1;
-    //     cout << v << " ";
-    //     vector<int>::iterator i;
-    //     for (i = adjlist[v].begin(); i != adjlist[v].end(); ++i)
-    //         if (!visited[*i])
-    //             DFSUtil(*i);
-    // }
-    // Graph getTranspose()
-    // {
-    //     Graph g(numOfVertex);
-    //     for (int v = 1; v <= numOfVertex; v++)
-    //     {
-    //         vector<int>::iterator i;
-    //         for (i = adjlist[v].begin(); i != adjlist[v].end(); ++i)
-    //         {
-    //             g.adjlist[*i].push_back(v);
-    //         }
-    //     }
-    //     return g;
-    // }
-    // void fillOrder(int v, stack<int> &Stack)
-    // {
-    //     visited[v] = 1;
-    //     vector<int>::iterator i;
-    //     for (i = adjlist[v].begin(); i != adjlist[v].end(); ++i)
-    //         if (visited[*i] == 0)
-    //             fillOrder(*i, Stack);
-    //     Stack.push(v);
-    // }
-    // void printSCCs()
-    // {
-    //     stack<int> Stack;
-    //     for (int i = 1; i <= numOfVertex; i++)
-    //         visited[i] = 0;
-    //     for (int i = 1; i <= numOfVertex; i++)
-    //         if (visited[i] == 0)
-    //             fillOrder(i, Stack);
-    //     Graph gr = getTranspose();
-    //     for (int i = 1; i <= numOfVertex; i++)
-    //         visited[i] = 0;
-    //     while (Stack.empty() == false)
-    //     {
-    //         int v = Stack.top();
-    //         Stack.pop();
-    //         if (visited[v] == 0)
-    //         {
-    //             gr.DFSUtil(v);
-    //             cout << endl;
-    //         }
-    //     }
-    // }
-    
 };
 
 int main()
