@@ -79,14 +79,26 @@ void XORQueries(){
     }
 
 }
+int allpairsum(int arr[], int n){
+    int ans=0;
+    for(int i=0; i<n; i++){
+        ans=ans^(2*i);
+    }
+    return ans;
+
+
+}
+
 int main(){
 	ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    freopen("input.txt","r",stdin); freopen("output.txt","w",stdout);
+    //freopen("input.txt","r",stdin); freopen("output.txt","w",stdout);
 	// cout<<checkithbitsetornot(3,0)<<endl;
 	// cout<<countingsetbits(3)<<endl;
     // cout<<countingsetbits2(3)<<endl;
     // cout<<checkifpoweroftwo(15)<<endl;
-    XORQueries();
+    //XORQueries();
+    int arr[]={1,2,3};
+    cout<<allpairsum(arr,3);
     return 0;
 }
