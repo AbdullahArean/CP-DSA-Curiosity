@@ -23,7 +23,9 @@ class Graph
 
     ll time;
     ll maxD, maxNode;
+
 public:
+   
     Graph(int n_vertex)
     {
         memset(indeg, 0x00, MAXN);
@@ -433,6 +435,8 @@ public:
  
     return count_Triangle;
     }
+    
+    
     void lengthcalc(int node, int distance)
     {
         visited[node]= 1;
@@ -458,6 +462,7 @@ public:
     return maxD;
         
     }
+    
 };
 
 int main()
@@ -473,11 +478,12 @@ int main()
         cin >> u >> v;
         graph1.add_new_edge(u, v);
     }
-    graph1.printlexicographicallyshortestpath(1, 3);
-    graph1.PrintShortestPathBFS(1, 3);
-    graph1.topologicalsort();
-    graph1.printadjmat();
-    cout << graph1.countTriangle(graph1.toadjacencylist(), 1);
+    // graph1.printlexicographicallyshortestpath(1, 3);
+    // graph1.PrintShortestPathBFS(1, 3);
+    // graph1.topologicalsort();
+    // graph1.printadjmat();
+    // cout << graph1.countTriangle(graph1.toadjacencylist(), 1);
+    cout<<graph1.maximumpathlength();
 
     return 0;
 }
