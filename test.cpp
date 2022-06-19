@@ -1,100 +1,114 @@
 /*
-Problem Link  : 
+Problem Link  :
 About Problem :
-Tags          : 
+Tags          :
  */
 
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-const int MAXN = 1e5;
-#define DIV ' '
-#define vi vector<int>
-#define pii pair<int, int>
-#define vii vector<pii>
-#define rep(i,a,b) for(int i=a; i<b; i++)
-#define ff first
-#define ss second
-#define pqmaxi(a) priority_queue<int, vi> a
-#define pqmini(a) priority_queue<int, vi, greater<int>> a
+const long long int MAXN = (int)1e9+5;
 
-int Precedence(char given){
-	switch (given)
+bool comparefn(pair<long long int, long long int> a, pair<long long int, long long int> b)
+{
+	if (a.first > b.first)
+		return false;
+	if (a.first < b.first)
+		return true;
+	else
 	{
-	case '*':
-		return 2;
-		break;
-	
-	case '/':
-		return 2;
-		break;
-	
-	case '-':
-		return 1;
-		break;
-	
-	case '+':
-		return 1;
-		break;
-	
-	default:
-		return -1;
-		break;
+		if (a.second >= b.second)
+			return false;
+		else
+			return true;
+	}
+}
+
+void Solution()
+{
+	long long int n, k;
+	long long int ans = 0;
+	vector<pair<long long int, long long int>> arr;
+	cin >> n >> k;
+	for (long long int i = 0; i < n; i++)
+	{
+		long long int temp = 0;
+		cin >> temp;
+		// ans+=temp/k;
+		arr.push_back(make_pair(temp % k, temp));
+	}
+	sort(arr.begin(), arr.end(), comparefn);
+	long long int i = 0, j = n - 1;
+	while (i < j)
+	{
+		if ((arr[i].first + arr[j].first) >= k)
+		{
+			long long int temp = arr[i].first;
+
+			arr[j].second += temp;
+			arr[i].second -= temp;
+
+			arr[i].first = arr[i].second/k;
+			arr[j].first = arr[j].second/k;
+			
+			i++; j--;
+		}
+		else if ((arr[i].first + arr[j].first) < k)
+		{
+			i++;
+		}
+	}
+	 /*
+	 for (long long int i = 0; i < n; i++)
+	{
+		cout<< arr[i].second<<" " ;
+	}
+	cout<<endl;
+	*/
+	for (long long int i = 0; i < n; i++)
+	{
+		ans += arr[i].second / k;
 	}
 	
-}
-string infixtopostfix(string infix){
-	stack<char> s;
-	string ans = "";
-	for(int p=0; p<infix.length(); p++){
-		char i= infix[p];
-		if(isalnum(i)) {
-			ans= ans +i;
-            if (i != infix.length() - 1 && (isalnum(infix[p+ 1])))
-                continue;
-            ans += DIV;
-        }
-		else if( i=='(') s.push(i);
-		else if(i==')'){
-			while(s.top()!='('){
-				ans+=s.top();
-				ans += DIV;
-				s.pop();
-			}
-			s.pop();
-
-		}
-		else if(Precedence(i)>=1){
-			if(s.empty() || Precedence(i)>Precedence(s.top())||s.top()=='(') 
-			{s.push(i);}
-
-			else{
-				while(Precedence(i)<Precedence(s.top())){
-					ans+=s.top();
-					ans += DIV;
-					s.pop();
-				}
-				ans+=i;
-				ans += DIV;
-
-		 }
-
-		}
-	 }
-	 while(!s.empty()){
-		 ans+=s.top();
-		 ans += DIV;
-		 s.pop();
-	 }
-	//cout<<ans<<endl;
-	return ans;
+	cout << ans << endl;
 }
 
-
-int main(){
+int main()
+{
 	ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-	string inf ="3+(2*(7-2)*5-2)*3";
-    cout<<infixtopostfix(inf);
-	
+	cin.tie(NULL);
+	// freopen("inp.txt", "r", stdin);
+	// freopen("output.txt", "w", stdout);
+	long long int t;
+	cin >> t;
+	while (t--)
+		Solution();
 	return 0;
 }
+/*
+#include<bits/stdc++.h>
+#define ll long long
+using namespace std;
+ll a[200005];
+int main(){
+	int t;
+	scanf("%d",&t);
+	while(t--){
+		ll n,k,ans=0;
+		scanf("%lld %lld",&n,&k);
+		for(int i=1;i<=n;i++){
+			scanf("%lld",&a[i]);
+			ans=ans+a[i]/k;
+			a[i]=a[i]%k;
+			
+		}
+		sort(a+1,a+1+n);
+		int l=1,r=n;
+		while(l<r){
+			if(a[l]+a[r]<k) l++;
+			else l++,r--,ans++;
+		}
+		printf("%lld\n",ans);
+	}
+}
+
+*/
