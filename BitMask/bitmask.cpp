@@ -88,6 +88,49 @@ int allpairsum(int arr[], int n){
 
 
 }
+int xorarray(int arr[], int n){
+    int ans=0;
+    for(int i=0; i<n;i++){
+        ans=ans^arr[i];
+    }
+    return ans;
+
+}// Function to set the kth bit of n
+int setBit(int n, int k)
+{
+    return (n | (1 << (k - 1)));
+}
+  
+// Function to clear the kth bit of n
+int clearBit(int n, int k)
+{
+    return (n & (~(1 << (k - 1))));
+}
+  
+// Function to toggle the kth bit of n
+int toggleBit(int n, int k)
+{
+    return (n ^ (1 << (k - 1)));
+}
+int unxor(int a, int resxor){
+    int ans =0;
+    int i=0;
+    while(resxor>0){
+        if((resxor&1)>0) {
+            if((a&1)>0){
+                clearBit(ans,i);
+            }
+            else{
+                setBit(ans,i);
+            }
+        }
+        resxor= resxor>>1;
+        a=a>>1;
+        i++;
+    }
+    cout<<ans;
+
+}
 
 int main(){
 	ios_base::sync_with_stdio(false);
@@ -98,7 +141,7 @@ int main(){
     // cout<<countingsetbits2(3)<<endl;
     // cout<<checkifpoweroftwo(15)<<endl;
     //XORQueries();
-    int arr[]={1,2,3};
-    cout<<allpairsum(arr,3);
+    // int arr[]={1,2,3};
+    cout<<unxor(2,1);
     return 0;
 }
