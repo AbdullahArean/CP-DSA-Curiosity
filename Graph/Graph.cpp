@@ -6,100 +6,71 @@ const int MAXN = 1e5, MOD = 1e9 + 7;
 // Edges starts from 0 to N-1
 class Graph
 {
-    int numOfVertex;
+    int numofvertex;
     vector<int> adjlist[MAXN];
 
     // for BFS
     int distance[MAXN]; // distance from the source
     int visited[MAXN];  // 0=>never visited 1=>visiting 2=>done visited
     int previos[MAXN];  // Stores the immediate parent/previous y
-
-    // for dfs
     int discoverytime[MAXN];
     int finishtime[MAXN];
-
-    // for topological sort
-    int indeg[MAXN];
-
     ll time;
     ll maxD, maxNode;
+
 public:
     Graph(int n_vertex)
     {
-        memset(indeg, 0x00, MAXN);
-        this->numOfVertex = n_vertex;
+        this->numofvertex = n_vertex;
     }
     void add_new_edge(int sourcenode, int destinationnode)
     {
         adjlist[sourcenode].push_back(destinationnode);
-        indeg[destinationnode]++;
-        // adjlist[destinationnode].push_back(sourcenode); // comment it out if it is a directed graph
+        // indeg[destinationnode]++;
+        adjlist[destinationnode].push_back(sourcenode); // comment it out if it is a directed graph
         // indeg[sourcenode]++; //toplogical sort
     }
-    bool detect_cycle_one_vertex(int currentnode, bool visited[], int parentnode)
+    vector<vector<int>> toadjacencylist()
     {
-        visited[currentnode] = true;
-        vector<int>::iterator itr;
-        for (itr = adjlist[currentnode].begin(); itr != adjlist[currentnode].end(); itr++)
-        {
+        // Initialize a matrix
+        vector<vector<int>> matrix(numofvertex, vector<int>(numofvertex, 0));
 
-            if (!visited[*itr])
+        for (int i = 0; i < numofvertex; i++)
+        {
+            for (auto j : adjlist[i])
+                matrix[i][j] = 1;
+        }
+        return matrix;
+    }
+    void printadjmat()
+    {
+        vector<vector<int>> adjmat = toadjacencylist();
+        for (int i = 0; i < adjmat.size(); i++)
+        {
+            for (int j = 0; j < adjmat.size(); j++)
             {
-                if (detect_cycle_one_vertex(*itr, visited, currentnode))
-                    return true;
+                cout << adjmat[i][j] << " ";
             }
-            else if (*itr != parentnode)
-                return true;
+            cout << endl;
         }
-        return false;
     }
-    bool detect_cycle_in_full_graph()
+    vector<int> *toadjlist()
     {
-        bool *visited = new bool[numOfVertex];
-        for (int i = 0; i < numOfVertex; i++)
-        {
-            visited[i] = false;
-        }
-        for (int currentnode = 0; currentnode < numOfVertex; currentnode++)
-            if (!visited[currentnode] && detect_cycle_one_vertex(currentnode, visited, -1))
-                return true;
-        return false;
+        return adjlist;
     }
-    bool isCycle()
+    void printadjlist()
     {
-        vector<int> in_degree(numOfVertex, 0);
-        for (int u = 0; u < numOfVertex; u++)
+        for (int i = 0; i < numofvertex; i++)
         {
-            for (auto v : adjlist[u])
-                in_degree[v]++;
+            cout << i << " : ";
+            for (auto j : adjlist[i])
+                cout << j << " ";
+            cout << "\n";
         }
-        queue<int> container_queue;
-        for (int i = 0; i < numOfVertex; i++)
-            if (in_degree[i] == 0)
-                container_queue.push(i);
-        int cnt = 1;
-        vector<int> top_order;
-        while (!container_queue.empty())
-        {
-            int u = container_queue.front();
-            container_queue.pop();
-            top_order.push_back(u);
-            vector<int>::iterator itr;
-            for (itr = adjlist[u].begin(); itr != adjlist[u].end(); itr++)
-                if (--in_degree[*itr] == 0)
-                {
-                    container_queue.push(*itr);
-                    cnt++;
-                }
-        }
-        if (cnt != numOfVertex)
-            return true;
-        else
-            return false;
     }
     void dfs()
     {
-        for (int i = 0; i < numOfVertex; i++)
+        for (int i = 0; i < numofvertex; i++)
         {
             visited[i] = 0;
             previos[i] = -1;
@@ -107,35 +78,30 @@ public:
             discoverytime[i] = INT_MIN;
         }
         time = 0;
-        int numberofconnectedcomponent = 0;
-        for (int i = 1; i <= numOfVertex; ++i)
+        for (int i = 0; i < numofvertex; i++)
         {
             if (visited[i] == 0)
             {
-                numberofconnectedcomponent++;
-                cout << i << endl;
                 dfs_visit(i);
             }
         }
-        cout << numberofconnectedcomponent << endl;
     }
     void dfs_visit(int i)
     {
         time = time + 1;
         discoverytime[i] = time;
         visited[i] = 1;
-        vector<int>::iterator it;
-        for (it = adjlist[i].begin(); it != adjlist[i].end(); it++)
+        for (auto it = adjlist[i].begin(); it != adjlist[i].end(); it++)
         {
             if (visited[*it] == 0)
             {
                 previos[*it] = i;
                 dfs_visit(*it);
             }
-            visited[i] = 2;
-            time = time + 1;
-            finishtime[i] = time;
         }
+        visited[i] = 2;
+        time = time + 1;
+        finishtime[i] = time;
     }
     void bfs(int x)
     { // Here x is the root vertex
@@ -170,27 +136,80 @@ public:
             }
         }
     }
-    void printadjlist()
+    void topologicalsort()
     {
-        for (int i = 1; i < numOfVertex + 1; i++)
+        
+    }
+    bool detect_cycle_one_vertex(int currentnode, bool visited[], int parentnode)
+    {
+        visited[currentnode] = true;
+        vector<int>::iterator itr;
+        for (itr = adjlist[currentnode].begin(); itr != adjlist[currentnode].end(); itr++)
         {
-            cout << i << " -> ";
-            for (int x : adjlist[i])
+
+            if (!visited[*itr])
             {
-                cout << x << " ";
+                if (detect_cycle_one_vertex(*itr, visited, currentnode))
+                    return true;
             }
-            cout << endl;
+            else if (*itr != parentnode)
+                return true;
         }
+        return false;
+    }
+    bool detect_cycle_in_full_graph()
+    {
+        bool *visited = new bool[numofvertex];
+        for (int i = 0; i < numofvertex; i++)
+        {
+            visited[i] = false;
+        }
+        for (int currentnode = 0; currentnode < numofvertex; currentnode++)
+            if (!visited[currentnode] && detect_cycle_one_vertex(currentnode, visited, -1))
+                return true;
+        return false;
+    }
+    bool isCycle()
+    {
+        vector<int> in_degree(numofvertex, 0);
+        for (int u = 0; u < numofvertex; u++)
+        {
+            for (auto v : adjlist[u])
+                in_degree[v]++;
+        }
+        queue<int> container_queue;
+        for (int i = 0; i < numofvertex; i++)
+            if (in_degree[i] == 0)
+                container_queue.push(i);
+        int cnt = 1;
+        vector<int> top_order;
+        while (!container_queue.empty())
+        {
+            int u = container_queue.front();
+            container_queue.pop();
+            top_order.push_back(u);
+            vector<int>::iterator itr;
+            for (itr = adjlist[u].begin(); itr != adjlist[u].end(); itr++)
+                if (--in_degree[*itr] == 0)
+                {
+                    container_queue.push(*itr);
+                    cnt++;
+                }
+        }
+        if (cnt != numofvertex)
+            return true;
+        else
+            return false;
     }
     void printAllPaths(int s, int d)
     {
 
         // Create an array to store paths
-        int *path = new int[numOfVertex];
+        int *path = new int[numofvertex];
         int path_index = 0; // Initialize path[] as empty
 
         // Initialize all vertices as not visited
-        for (int i = 0; i < numOfVertex; i++)
+        for (int i = 0; i < numofvertex; i++)
             visited[i] = 0;
 
         // Call the recursive helper function to print all paths
@@ -254,16 +273,16 @@ public:
     }
     bool isBipartite()
     {
-        for (int i = 0; i < numOfVertex; ++i)
+        for (int i = 0; i < numofvertex; ++i)
         {
             visited[i] = -1;
             distance[i] = -1;
         }
-        for (int i = 0; i < numOfVertex; i++)
+        for (int i = 0; i < numofvertex; i++)
             if (visited[i] == -1)
                 isBt(i);
 
-        for (int i = 0; i < numOfVertex; i++)
+        for (int i = 0; i < numofvertex; i++)
         {
             for (auto it : adjlist[i])
             {
@@ -355,68 +374,17 @@ public:
             cout << "Not Reachable" << endl;
         }
     }
-    void topologicalsort()
-    {
-        queue<int> q;
-        int tempindeg[MAXN];
-        for (int i = 0; i < numOfVertex; i++)
-        {
-            if (indeg[i] == 0)
-                q.push(i);
-        }
-        for (int i = 0; i < numOfVertex; i++)
-        {
-            tempindeg[i] = indeg[i];
-        }
-        while (!q.empty())
-        {
-            int temp = q.front();
-            q.pop();
-            cout << temp << " ";
-            for (auto it : adjlist[temp])
-            {
-                tempindeg[it]--;
-                if (tempindeg[it] == 0)
-                    q.push(it);
-            }
-        }
-        cout << endl;
-    }
-    vector<vector<int>> toadjacencylist()
-    {
-        // Initialize a matrix
-        vector<vector<int>> matrix(numOfVertex, vector<int>(numOfVertex, 0));
-
-        for (int i = 0; i < numOfVertex; i++)
-        {
-            for (auto j : adjlist[i])
-                matrix[i][j] = 1;
-        }
-        return matrix;
-    }
-    void printadjmat()
-    {
-        vector<vector<int>> adjmat = toadjacencylist();
-        for (int i = 0; i < adjmat.size(); i++)
-        {
-            for (int j = 0; j < adjmat.size(); j++)
-            {
-                cout << adjmat[i][j] << " ";
-            }
-            cout << endl;
-        }
-    }
     int countTriangle(vector<vector<int>> graph, bool isDirected)
     {
         int count_Triangle = 0;
 
         // Consider every possible
         // triplet of edges in graph
-        for (int i = 0; i < numOfVertex; i++)
+        for (int i = 0; i < numofvertex; i++)
         {
-            for (int j = 0; j < numOfVertex; j++)
+            for (int j = 0; j < numofvertex; j++)
             {
-                for (int k = 0; k < numOfVertex; k++)
+                for (int k = 0; k < numofvertex; k++)
                 {
                     // Check the triplet if
                     // it satisfies the condition
@@ -426,37 +394,40 @@ public:
             }
         }
         // If graph is directed ,
-    // division is done by 3,
-    // else division by 6 is done
-    isDirected? count_Triangle /= 3 :
-                count_Triangle /= 6;
- 
-    return count_Triangle;
+        // division is done by 3,
+        // else division by 6 is done
+        isDirected ? count_Triangle /= 3 : count_Triangle /= 6;
+
+        return count_Triangle;
     }
     void lengthcalc(int node, int distance)
     {
-        visited[node]= 1;
-        if(distance>maxD) {
-            maxD =distance, maxNode=node;
-            cout<<maxD<<" "<<maxNode<<endl;
-            }
-
-        for (auto child:adjlist[node])
+        visited[node] = 1;
+        if (distance > maxD)
         {
-            if(visited[child]==0) lengthcalc(child,distance+1);
+            maxD = distance, maxNode = node;
+            cout << maxD << " " << maxNode << endl;
+        }
+
+        for (auto child : adjlist[node])
+        {
+            if (visited[child] == 0)
+                lengthcalc(child, distance + 1);
         }
     }
-    int maximumpathlength(){
-    for(int i=0; i<numOfVertex;i++){
-        visited[i]=0;
-    }
-    maxD=INT_MIN;
-    for(int i=0; i<numOfVertex; i++){
-    lengthcalc(i,0);
-    lengthcalc(maxNode,0);
-    }
-    return maxD;
-        
+    int maximumpathlength()
+    {
+        for (int i = 0; i < numofvertex; i++)
+        {
+            visited[i] = 0;
+        }
+        maxD = INT_MIN;
+        for (int i = 0; i < numofvertex; i++)
+        {
+            lengthcalc(i, 0);
+            lengthcalc(maxNode, 0);
+        }
+        return maxD;
     }
 };
 
@@ -473,11 +444,13 @@ int main()
         cin >> u >> v;
         graph1.add_new_edge(u, v);
     }
-    graph1.printlexicographicallyshortestpath(1, 3);
-    graph1.PrintShortestPathBFS(1, 3);
-    graph1.topologicalsort();
-    graph1.printadjmat();
-    cout << graph1.countTriangle(graph1.toadjacencylist(), 1);
+    graph1.printadjlist();
+    graph1.dfs();
+    // graph1.printlexicographicallyshortestpath(1, 3);
+    // graph1.PrintShortestPathBFS(1, 3);
+    // graph1.topologicalsort();
+    // graph1.printadjmat();
+    // cout << graph1.countTriangle(graph1.toadjacencylist(), 1);
 
     return 0;
 }
