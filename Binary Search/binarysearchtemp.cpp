@@ -2,13 +2,13 @@
 using namespace std;
 const long long int MAXN = 100000;
 
-int SolutionForAssumedInput(int a, int b, int assume)
+int SolutionForAssumedInput(int a, int b, double assume)
 {
     int a= assume*a;
     int b= assume*b;
     int peri= 2*(a+b);
-    if(peri<400) return -1;
-    if(peri>400) return +1;
+    if(fabs(peri-400)<10e-6) return -1;
+    if(p eri>400) return +1;
     else return 0;
 }
 int BinarySearchOnRealLifeProblems()
