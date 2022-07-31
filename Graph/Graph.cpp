@@ -10,7 +10,7 @@ class Graph
     vector<int> adjlist[MAXN];
 
     // for BFS
-    int distance[MAXN]; // distance from the source
+     int distance[MAXN]; // distance from the source
     int visited[MAXN];  // 0=>never visited 1=>visiting 2=>done visited
     int previos[MAXN];  // Stores the immediate parent/previous y
     int discoverytime[MAXN];
