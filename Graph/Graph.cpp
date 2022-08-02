@@ -140,35 +140,46 @@ public:
     {
         
     }
-    bool detect_cycle_one_vertex(int currentnode, bool visited[], int parentnode)
+    bool isCyclicUtil(int v, bool *recStack)
+{
+    if(visited[v] == false)
     {
-        visited[currentnode] = true;
-        vector<int>::iterator itr;
-        for (itr = adjlist[currentnode].begin(); itr != adjlist[currentnode].end(); itr++)
+        // Mark the current node as visited and part of recursion stack
+        visited[v] = true;
+        recStack[v] = true;
+  
+        // Recur for all the vertices adjacent to this vertex
+        for(auto i = adjlist[v].begin(); i != adjlist[v].end(); ++i)
         {
-
-            if (!visited[*itr])
-            {
-                if (detect_cycle_one_vertex(*itr, visited, currentnode))
-                    return true;
-            }
-            else if (*itr != parentnode)
+            if ( !visited[*i] && isCyclicUtil(*i, recStack) )
+                return true;
+            else if (recStack[*i])
                 return true;
         }
-        return false;
+  
     }
-    bool detect_cycle_in_full_graph()
+    recStack[v] = false;  // remove the vertex from recursion stack
+    return false;
+}
+    bool isCyclic()
+{
+    // Mark all the vertices as not visited and not part of recursion
+    // stack
+    bool *recStack = new bool[numofvertex];
+    for(int i = 0; i < numofvertex; i++)
     {
-        bool *visited = new bool[numofvertex];
-        for (int i = 0; i < numofvertex; i++)
-        {
-            visited[i] = false;
-        }
-        for (int currentnode = 0; currentnode < numofvertex; currentnode++)
-            if (!visited[currentnode] && detect_cycle_one_vertex(currentnode, visited, -1))
-                return true;
-        return false;
+        visited[i] = 0;
+        recStack[i] = false;
     }
+  
+    // Call the recursive helper function to detect cycle in different
+    // DFS trees
+    for(int i = 0; i < numofvertex; i++)
+        if ( !visited[i] && isCyclicUtil(i,recStack))
+            return true;
+  
+    return false;
+}
     bool isCycle()
     {
         vector<int> in_degree(numofvertex, 0);
